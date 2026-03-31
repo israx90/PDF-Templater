@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDTech PDF Templater — Web App</title>
+    <meta name="description" content="EDTech PDF Templater: Conversor Web a PDF profesional con plantillas personalizables, carátulas, encabezados y estilos avanzados.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="app-container">
+<!-- COLUMN 1: LEFT SIDEBAR -->
+<aside class="sidebar-left">
+    <div class="brand" style="background: #ef4444; color: white; border-bottom: none;">
+        <a href="#" style="text-decoration:none; color: white; display:flex; align-items:center; gap:10px;">
+            <svg style="width:44px;height:44px;flex-shrink:0;" viewBox="0 0 182.2 186.23" xmlns="http://www.w3.org/2000/svg"><g><path fill="#fff" d="M65.96,86.61c5.87,3.25,12.71,2.65,16.43.38,2.21-1.35,3.29-3.18,3.22-5.44h.17V11.55c-4.42-7.14-12.26-11.55-20.69-11.55-10.39,0-19.47,6.66-22.85,16.12,2.42.47,4.77,1.32,6.95,2.57.66.38,1.29.79,1.9,1.22,4-3.02,8.89-4.55,13.97-4.31,5.75.26,11.06,2.75,14.94,6.99,1.44,1.58,2.64,3.35,3.55,5.26l-8.71,4.13c-.5-1.06-1.16-2.03-1.96-2.91-2.15-2.35-5.08-3.72-8.26-3.87-2.53-.11-4.97.57-7.05,1.93.92,1.63,1.66,3.37,2.16,5.22,1.57,5.81.78,11.89-2.23,17.1-.28.49-.58.96-.89,1.42l-7.98-5.41c.18-.26.35-.54.51-.82,1.72-2.99,2.18-6.47,1.28-9.8-.9-3.33-3.04-6.11-6.04-7.83-2.81-1.62-6.1-2.12-9.26-1.41-7.92,2.39-13.48,9.7-13.48,18.12,0,.78.07,1.63.22,2.69l.58,4.09-3.97,1.19C7.59,54.96,0,65.15,0,76.48c0,6.78,2.62,13.19,7.37,18.05l.5.51c2-.27,3.91-1.05,5.57-2.3,2.54-1.92,4.17-4.71,4.61-7.86.16-1.17.15-2.35-.03-3.51l9.52-1.52c.34,2.1.36,4.23.06,6.35-.79,5.69-3.75,10.74-8.34,14.22-3.79,2.86-8.31,4.37-12.98,4.37-.58,0-1.16-.03-1.75-.08-2.94,4.27-4.53,9.32-4.53,14.59,0,10.48,6.26,19.85,15.96,23.88l3.98,1.65-1.2,4.13c-.43,1.49-.65,3-.65,4.49,0,8.89,7.25,16.13,16.16,16.13.42,0,.88-.02,1.46-.08l2.3-.2c9.2-2.51,15.27-11.6,13.77-21.23-1.18-7.56-6.74-13.65-14.18-15.52l2.35-9.34c8.49,2.13,15.36,7.92,18.96,15.55,5.66-1.74,9.29-7.47,8.23-13.44-.21-1.17-.58-2.29-1.11-3.33l8.59-4.37c.97,1.89,1.65,3.92,2.02,6.02,1.94,10.89-4.74,21.34-15.13,24.4,1.33,12.72-6.01,24.57-17.47,29.35,4.85,5.54,11.87,8.82,19.47,8.82,9.17,0,17.62-4.85,22.28-12.69v-77.43c-3.27,1.61-7.03,2.42-10.89,2.42-4.64,0-9.41-1.16-13.61-3.49-5.16-2.86-13.84-9.99-13.99-25.66l9.65-.09c.1,10.25,4.96,15.08,9.02,17.33Z"/><g><rect fill="#fff" x="166.69" y="71.41" width="15.51" height="15.92"/><rect fill="#fff" x="157.81" y="142.83" width="15.51" height="15.92"/><rect fill="#fff" x="93.84" y="63.15" width="18.36" height="18.85"/><rect fill="#fff" x="93.77" y=".66" width="21.7" height="22.27"/><rect fill="#fff" x="136.24" y="169.64" width="15.51" height="15.92"/><polygon fill="#fff" points="153.28 124.52 141.1 132.05 141.73 131.87 125.38 131.87 117.01 115.47 117.01 98.9 136.65 88.56 153.28 88.56 153.28 64.72 133.91 64.72 119.13 48.34 119.13 39.42 129.99 32.7 142.36 32.7 142.36 16.78 126.85 16.78 126.85 28.31 115.32 35.45 102.96 35.45 102.96 52.05 115.27 52.05 130.05 68.42 130.05 85.95 110.41 96.29 93.77 96.29 93.77 120.13 114.62 120.13 122.99 136.54 122.99 151.85 115.91 159.51 93.97 159.51 93.97 185.89 119.67 185.89 119.67 163.31 126.69 155.72 146.22 155.72 146.22 135.21 158.35 127.71 157.78 127.85 176.52 127.85 176.52 104.01 153.28 104.01 153.28 124.52"/><rect fill="#fff" x="146.2" y="38.9" width="15.51" height="15.92"/></g></g></svg>
+            <div class="logo-text">
+                <span class="brand-highlight" style="color: white;">EDTECH</span>
+                <span class="brand-sub" style="color: rgba(255,255,255,0.9);">PDF TEMPLATER</span>
+            </div>
+            <div class="version" style="background: rgba(255,255,255,0.2); border: none; color: white;">v1.5 Web</div>
+        </a>
+    </div>
+    <div class="sidebar-header" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">
+        <h3 style="margin:0; font-size:12px; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-list-ul" style="margin-right:6px;"></i> Cola de Proc.
+        </h3>
+    </div>
+    <div class="settings-group" style="margin-bottom: 15px;">
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:5px;">Plantillas</label>
+        <div style="display:flex; gap:5px;">
+            <button id="importTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;" title="Cargar Plantilla">
+                <i class="fa-solid fa-file-arrow-up"></i> Cargar
+            </button>
+            <button id="exportTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;" title="Guardar Plantilla">
+                <i class="fa-solid fa-file-arrow-down"></i> Guardar
+            </button>
+            <input type="file" id="templateInput" accept=".edd,.edx,.epd,.edp,application/json" hidden>
+        </div>
+    </div>
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-image"></i> Encabezado</h3>
+        <div class="header-upload-box" id="headerDropZone">
+            <input type="file" id="headerInput" accept="image/*" hidden>
+            <div class="preview-area" id="headerPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Subir Imagen</span>
+            </div>
+        </div>
+    </div>
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-file-image"></i> Carátula</h3>
+        <div class="header-upload-box" id="caratulaImgDropZone">
+            <input type="file" id="caratulaImgInput" accept="image/*" hidden>
+            <div class="preview-area" id="caratulaImgPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Imagen de Fondo</span>
+            </div>
+        </div>
+    </div>
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-file-image"></i> Contratapa</h3>
+        <div class="header-upload-box" id="contratapaImgDropZone">
+            <input type="file" id="contratapaImgInput" accept="image/*" hidden>
+            <div class="preview-area" id="contratapaImgPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Imagen de Fondo</span>
+            </div>
+        </div>
+    </div>
+    <div class="settings-group">
+        <button id="openConfigBtnSidebar" class="btn-select" style="width: 100%; justify-content: center; padding: 10px; background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">
+            <i class="fa-solid fa-gear" style="width:20px; text-align:center;"></i> Configurar Estilos PDF
+        </button>
+    </div>
+    <div class="settings-group" style="margin-top:auto;">
+        <div style="background:var(--bg-panel-secondary); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-muted);">
+            <i class="fa-solid fa-circle-info" style="color:var(--primary); margin-right:5px;"></i>
+            Conversor Web a PDF optimizado para <strong>Unifranz</strong>. Versión Web.
+        </div>
+    </div>
+</aside>
+<!-- COLUMN 2: CENTER WORKSPACE -->
+<main class="workspace">
+    <div class="workspace-header">
+        <h2>Espacio de Trabajo</h2>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button id="addUrlToQueueBtn" class="btn-mini" style="background:var(--primary); color:white; border:none; padding:7px 14px;">
+                <i class="fa-solid fa-link"></i> Añadir URL
+            </button>
+            <button id="loadXlsBtn" class="btn-mini" style="background:#10b981; color:white; border:none; padding:7px 14px;" title="Carga un archivo XLSX para crear carpetas por materia y añadir URLs con prefijo a la cola">
+                <i class="fa-solid fa-file-excel"></i> Cargar XLS
+            </button>
+            <input type="file" id="xlsInput" accept=".xlsx,.xls" hidden>
+            <button id="loadPdfBtn" class="btn-mini" style="background:#7c3aed; color:white; border:none; padding:7px 14px;" title="Carga PDFs en blanco y aplica el encabezado/pie de la plantilla activa">
+                <i class="fa-solid fa-file-pdf"></i> Cargar PDFs
+            </button>
+            <input type="file" id="pdfStampInput" accept=".pdf" multiple hidden>
+            <span class="badge">Listo</span>
+        </div>
+    </div>
+    <div id="urlInlineBar" style="display:none; padding:10px 20px; background:white; border-bottom:1px solid var(--border-color); gap:8px; align-items:center;">
+        <input type="url" id="urlInlineInput" placeholder="https://ejemplo.com/articulo" autocomplete="off"
+            style="flex:1; padding:9px 14px; border:1.5px solid var(--primary); border-radius:8px; font-size:0.9rem; color:var(--text-color); background:white; outline:none; min-width:0;">
+        <button id="urlInlineConfirm" class="btn-mini" style="background:var(--primary); color:white; border:none; white-space:nowrap;">
+            <i class="fa-solid fa-check"></i> Añadir a Cola
+        </button>
+        <button id="urlInlineCancel" class="btn-mini btn-outline" style="white-space:nowrap;">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+        </button>
+    </div>
+    <div class="workspace-body">
+        <div class="hero-zone" id="clipboardZone">
+            <div class="hero-content">
+                <i class="fa-regular fa-file-pdf main-icon"></i>
+                <h2>Agregar URLs a la cola</h2>
+                <p>Pega desde el portapapeles o escribe la URL manualmente para convertirlas en PDF</p>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                    <button id="pasteBtn" class="btn-select">
+                        <i class="fa-solid fa-paste"></i> PEGAR ENLACE
+                    </button>
+                    <button id="writeUrlBtn" class="btn-select"
+                        style="background:transparent; border:2px solid #ef4444; color:#ef4444; border-radius:6px; padding:10px 24px; font-weight:600; font-size:0.95rem; cursor:pointer;"
+                        onmouseover="this.style.background='#fef2f2';" onmouseout="this.style.background='transparent';">
+                        <i class="fa-solid fa-link" style="margin-right:6px;"></i> ESCRIBIR URL
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="production-queue" id="productionQueue">
+            <div class="queue-header-actions">
+                <span style="font-weight: 600; color: var(--text-muted);">
+                    Enlaces: <span id="queueCount">0</span>
+                </span>
+                <div style="display:flex; gap:10px;">
+                    <button id="clearQueueBtn" class="btn-mini btn-outline">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="queue-list" id="queueList"></div>
+        </div>
+        <div style="margin-top:20px; color:#94a3b8; font-size:0.9rem; text-align:center;">
+            <p>Formato Automático: <strong id="footerPaperSize">Carta (Letter)</strong> | Estilos: <strong>Unifranz</strong></p>
+        </div>
+    </div>
+</main>
+<!-- COLUMN 3: RIGHT SIDEBAR -->
+<aside class="sidebar-right">
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Acciones</h3>
+    </div>
+    <div class="settings-group">
+        <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted);">Carpeta de Salida</label>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <input type="text" id="outputFolderDisplay" readonly placeholder="Descargas del navegador"
+                style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px; background:#f8fafc; color:#64748b; font-size:0.85rem;">
+            <div style="background:#fffbeb; border:1px solid #fbbf24; border-radius:6px; padding:8px 10px; font-size:0.75rem; color:#92400e;">
+                <i class="fa-solid fa-info-circle" style="margin-right:4px;"></i>
+                En la versión web, los archivos se descargan directamente al navegador.
+            </div>
+            <input type="hidden" id="outputFolderValue">
+        </div>
+    </div>
+    <div class="settings-group">
+        <label style="display:block; margin-bottom:10px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-file-signature" style="margin-right:4px;"></i> Nombre del Archivo
+        </label>
+        <div style="display:flex; gap:8px;">
+            <div style="flex:1;">
+                <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Prefijo</label>
+                <input type="text" id="filePrefix" placeholder="Ej: UNIFRANZ_"
+                    style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+            </div>
+            <div style="flex:1;">
+                <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Sufijo</label>
+                <input type="text" id="fileSuffix" placeholder="Ej: _ES"
+                    style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+            </div>
+        </div>
+        <p style="margin-top:6px; font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">
+            Resultado: <span id="fileNamePreview" style="color:var(--text-main);">prefijo_titulo_sufijo.pdf</span>
+        </p>
+    </div>
+    <div class="settings-group" id="pdfStampOptionsGroup" style="display:none;">
+        <label style="display:block; margin-bottom:8px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-file-pdf" style="color:#7c3aed; margin-right:4px;"></i> Opciones PDF Estampado
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-main); cursor:pointer;">
+            <input type="checkbox" id="stampRecolorAccent" style="accent-color:#7c3aed; width:14px; height:14px;">
+            Recolorizar texto de acento al color EPD
+        </label>
+        <p style="margin-top:4px; font-size:10px; color:var(--text-muted); line-height:1.4;">
+            Convierte textos de color (ej. naranja) al color H2 de la plantilla activa. El negro se conserva.
+        </p>
+    </div>
+    <div class="settings-group">
+        <button id="processBtn" class="btn-primary" disabled style="width:100%; justify-content:center; height:50px;">
+            <span>INICIAR PROCESO</span>
+            <i class="fa-solid fa-bolt"></i>
+        </button>
+    </div>
+    <div id="globalActions" style="display:none; flex-direction:column; gap:15px; padding:20px; border-top:1px solid var(--border-color);">
+        <div style="text-align:center;">
+            <h4 style="color:var(--success); margin-bottom:5px;">¡Proceso Finalizado!</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Archivos listos para descarga.</p>
+        </div>
+    </div>
+    <div class="console-panel">
+        <div class="console-header-static">
+            <i class="fa-solid fa-terminal"></i> REGISTRO DEL SISTEMA
+        </div>
+        <div class="console-logs-static" id="consoleLogs">
+            <div class="log-item info">Sistema listo. Versión Web — funciona sin servidor.</div>
+        </div>
+    </div>
+</aside>
+</div><!-- end .app-container -->
+<!-- CONFIG MODAL -->
+<div id="configModal" class="config-modal-overlay">
+    <div class="config-window" style="width: 720px;">
+        <div class="config-header">
+            <span class="config-title"><i class="fa-solid fa-paintbrush"></i> Configurar Estilos PDF</span>
+            <button id="closeConfigBtn" class="btn-close-config"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="config-tabs">
+            <button class="tab-btn active" data-tab="pdf-tab-documento"><i class="fa-solid fa-file-lines" style="margin-right:4px;"></i>Documento</button>
+            <button class="tab-btn" data-tab="pdf-tab-estilos"><i class="fa-solid fa-palette" style="margin-right:4px;"></i>Estilos Visuales</button>
+            <button class="tab-btn" data-tab="pdf-tab-bloques"><i class="fa-solid fa-puzzle-piece" style="margin-right:4px;"></i>Encabezado & APA</button>
+            <button class="tab-btn tab-btn-divider" data-tab="pdf-tab-tapas"><i class="fa-solid fa-book-open"></i> Tapas</button>
+        </div>
+        <div class="config-body">
+            <!-- TAB 1: DOCUMENTO -->
+            <div id="pdf-tab-documento" class="tab-content">
+                <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-ruler-combined"></i> Formato y Papel</div>
+                <div class="paper-selector" id="paperSizeGroup" style="margin-bottom:15px;">
+                    <label class="paper-card active" data-value="letter"><div class="icon"><i class="fa-regular fa-file"></i></div><span>CARTA</span></label>
+                    <label class="paper-card" data-value="legal"><div class="icon"><i class="fa-solid fa-file-contract"></i></div><span>OFICIO</span></label>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Margen Superior (pt)</label><input type="number" id="cfgMarginTop" value="50" min="20" max="100" step="5"></div>
+                    <div class="input-group"><label>Margen Inferior (pt)</label><input type="number" id="cfgMarginBottom" value="50" min="20" max="100" step="5"></div>
+                </div>
+                <div class="grid-2" style="margin-bottom:15px;">
+                    <div class="input-group"><label>Margen Izquierdo (pt)</label><input type="number" id="cfgMarginLeft" value="50" min="20" max="100" step="5"></div>
+                    <div class="input-group"><label>Margen Derecho (pt)</label><input type="number" id="cfgMarginRight" value="50" min="20" max="100" step="5"></div>
+                </div>
+                <div class="section-title"><i class="fa-solid fa-font"></i> Tipografía Base</div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Fuente</label>
+                        <select id="cfgFont"><option value="Helvetica">Helvetica (Sans)</option><option value="Times-Roman">Times New Roman</option><option value="Courier">Courier (Mono)</option><option value="Calibri">Calibri</option></select>
+                    </div>
+                    <div class="input-group"><label>Alineación</label>
+                        <select id="cfgTextAlignment"><option value="justify" selected>Justificado</option><option value="left">Izquierda</option><option value="center">Centrado</option><option value="right">Derecha</option></select>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Texto (pt)</label><input type="number" id="cfgFontSize" value="11" min="8" max="16"></div>
+                    <div class="input-group"><label>Interlineado</label>
+                        <select id="cfgLineSpacing"><option value="1.2">Sencillo (1.0)</option><option value="1.5" selected>1.5 Líneas</option><option value="2.0">Doble (2.0)</option></select>
+                    </div>
+                </div>
+                <div class="section-title"><i class="fa-solid fa-list-ol"></i> Numeración de Página</div>
+                <div class="input-group">
+                    <select id="cfgPageNumFormat"><option value="simple">1</option><option value="page_n">Página 1</option><option value="n_of_m">1 de n</option><option value="page_n_of_m" selected>Página 1 de n</option><option value="none">Sin numeración</option></select>
+                </div>
+            </div>
+            <!-- TAB 2: ESTILOS VISUALES -->
+            <div id="pdf-tab-estilos" class="tab-content hidden-tab">
+                <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-heading"></i> Títulos y Enlaces</div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Título (H1)</label><input type="number" id="cfgH1Size" value="26"></div>
+                    <div class="input-group"><label>Color H1</label><div class="color-picker-row"><input type="color" id="cfgH1Color" value="#000000"><input type="text" id="cfgH1ColorHex" value="#000000" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Subtítulo (H2)</label><input type="number" id="cfgH2Size" value="17"></div>
+                    <div class="input-group"><label>Color H2</label><div class="color-picker-row"><input type="color" id="cfgH2Color" value="#ef4444"><input type="text" id="cfgH2ColorHex" value="#EF4444" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div class="input-group" style="margin-top:5px; margin-bottom:15px;"><label>Color Hipervínculos</label><div class="color-picker-row"><input type="color" id="cfgLinkColor" value="#2c6eff"><input type="text" id="cfgLinkColorHex" value="#2C6EFF" class="hex-input" maxlength="7"></div></div>
+                <div class="section-title"><i class="fa-solid fa-table"></i> Tablas de Datos</div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Fondo Encabezado</label><div class="color-picker-row"><input type="color" id="cfgTableHeaderBg" value="#1e3a5f"><input type="text" id="cfgTableHeaderBgHex" value="#1E3A5F" class="hex-input" maxlength="7"></div></div>
+                    <div class="input-group"><label>Color Texto Encabezado</label><div class="color-picker-row"><input type="color" id="cfgTableHeaderText" value="#ffffff"><input type="text" id="cfgTableHeaderTextHex" value="#FFFFFF" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Fila Par</label><div class="color-picker-row"><input type="color" id="cfgTableRowEven" value="#f0f4f8"><input type="text" id="cfgTableRowEvenHex" value="#F0F4F8" class="hex-input" maxlength="7"></div></div>
+                    <div class="input-group"><label>Fila Impar</label><div class="color-picker-row"><input type="color" id="cfgTableRowOdd" value="#ffffff"><input type="text" id="cfgTableRowOddHex" value="#FFFFFF" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Color Borde</label><div class="color-picker-row"><input type="color" id="cfgTableBorderColor" value="#cccccc"><input type="text" id="cfgTableBorderColorHex" value="#CCCCCC" class="hex-input" maxlength="7"></div></div>
+                    <div class="input-group"><label>Grosor Borde (pt)</label><input type="number" id="cfgTableBorderWidth" value="0.5" min="0" max="3" step="0.5"></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Texto (pt)</label><input type="number" id="cfgTableFontSize" value="9" min="6" max="14"></div>
+                    <div class="input-group"><label>Padding (pt)</label><input type="number" id="cfgTablePadding" value="5" min="2" max="12"></div>
+                </div>
+                <div style="margin-top:10px; overflow:auto; border-radius:6px; border:1px solid var(--border-color);">
+                    <table id="tablePreviewPdf" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <thead><tr id="previewHeaderRow"><th style="padding:8px 10px; text-align:left;">Columna A</th><th style="padding:8px 10px; text-align:left;">Columna B</th><th style="padding:8px 10px; text-align:left;">Columna C</th></tr></thead>
+                        <tbody><tr id="previewRow1"><td style="padding:6px 10px;">Dato 1</td><td style="padding:6px 10px;">Dato 2</td><td style="padding:6px 10px;">Dato 3</td></tr><tr id="previewRow2"><td style="padding:6px 10px;">Dato 4</td><td style="padding:6px 10px;">Dato 5</td><td style="padding:6px 10px;">Dato 6</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- TAB 3: BLOQUES -->
+            <div id="pdf-tab-bloques" class="tab-content hidden-tab">
+                <div class="info-box" style="margin-bottom:15px; background:var(--bg-panel-secondary); padding:10px; border-radius:6px; font-size:0.85rem; color:var(--text-muted);">
+                    <i class="fa-solid fa-info-circle"></i> Configura los bloques estructurales que preceden y finalizan el documento.
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-regular fa-window-maximize"></i> Encabezado de Página</span>
+                    <label class="toggle-mini"><input type="checkbox" id="enableHeaderText" checked onchange="const z=document.getElementById('headerTextZone');if(z)z.style.display=this.checked?'block':'none';"><span class="toggle-mini-switch"></span></label>
+                </div>
+                <div id="headerTextZone">
+                    <div class="grid-2">
+                        <div class="input-group"><label>Contenido</label><select id="cfgHeaderType"><option value="title" selected>Título del Documento</option><option value="custom">Texto Personalizado</option></select></div>
+                        <div class="input-group" id="customHeaderGroup" style="display:none;"><label>Texto Custom</label><input type="text" id="cfgHeaderText" placeholder="Ej: Reporte 2026"></div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top:10px; margin-bottom:15px;"><label>Alto Imagen Encabezado (pt)</label><input type="number" id="cfgHeaderImgHeight" value="40" min="15" max="80" step="5"></div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:20px; border-top:1px solid var(--border-color); padding-top:15px; margin-bottom:10px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-solid fa-asterisk"></i> Bloque de Referencia APA</span>
+                    <label class="toggle-mini"><input type="checkbox" id="enableApaBlock" checked><span class="toggle-mini-switch"></span></label>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Fondo APA</label><div class="color-picker-row"><input type="color" id="cfgApaBg" value="#f5f5f5"><input type="text" id="cfgApaBgHex" value="#F5F5F5" class="hex-input" maxlength="7"></div></div>
+                    <div class="input-group"><label>Borde APA</label><div class="color-picker-row"><input type="color" id="cfgApaBorder" value="#cccccc"><input type="text" id="cfgApaBorderHex" value="#CCCCCC" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Texto (pt)</label><input type="number" id="cfgApaFontSize" value="10" min="7" max="14"></div>
+                    <div class="input-group"><label>Color Texto APA</label><div class="color-picker-row"><input type="color" id="cfgApaTextColor" value="#000000"><input type="text" id="cfgApaTextColorHex" value="#000000" class="hex-input" maxlength="7"></div></div>
+                </div>
+            </div>
+            <!-- TAB 4: TAPAS -->
+            <div id="pdf-tab-tapas" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-regular fa-image"></i> Carátula Inicial</span>
+                    <label class="toggle-mini"><input type="checkbox" id="enableCaratula" checked><span class="toggle-mini-switch"></span></label>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px; display:block;">
+                        <i class="fa-solid fa-arrows-up-down-left-right" style="margin-right:4px;"></i>Editor Visual (Arrastra los textos)
+                    </label>
+                    <div id="caratulaPreviewContainer" style="position:relative; width:100%; aspect-ratio:8.5/11; border:2px solid #cbd5e1; border-radius:8px; overflow:hidden; background:#f8fafc; cursor:crosshair; user-select:none;">
+                        <div id="caratulaPreviewBg" style="position:absolute; inset:0; background-size:cover; background-position:center;"></div>
+                        <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(100,116,139,0.06) 1px, transparent 1px),linear-gradient(90deg, rgba(100,116,139,0.06) 1px, transparent 1px);background-size:20% 20%;"></div>
+                        <div style="position:absolute; top:0; bottom:0; left:50%; width:1px; background:rgba(59,130,246,0.15);"></div>
+                        <div id="caratulaDragInstitucion" class="caratula-drag-label" style="position:absolute; left:50%; top:15%; transform:translate(-50%,-50%); font-size:9px; font-weight:700; color:#64748b; cursor:grab; padding:3px 10px; border-radius:4px; border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;" data-field="institucion">INSTITUCIÓN</div>
+                        <div id="caratulaDragTitle" class="caratula-drag-label" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:12px; font-weight:800; color:#1e293b; letter-spacing:0.5px; cursor:grab; padding:4px 12px; border-radius:4px; border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center; max-width:90%;" data-field="titulo">TÍTULO DEL DOCUMENTO</div>
+                        <div id="caratulaDragAutor" class="caratula-drag-label" style="position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); font-size:8px; color:#64748b; cursor:grab; padding:3px 10px; border-radius:4px; border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;" data-field="autor">Autor (opcional)</div>
+                        <div id="caratulaDragFecha" class="caratula-drag-label" style="position:absolute; left:50%; top:65%; transform:translate(-50%,-50%); font-size:7px; color:#94a3b8; cursor:grab; padding:2px 8px; border-radius:4px; border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;" data-field="fecha">Fecha</div>
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-bottom:10px; display:none;"><input type="range" id="cfgCaratulaTitleX" min="5" max="95" value="50"><input type="range" id="cfgCaratulaTitleY" min="5" max="95" value="50"></div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Título Especifico</label><input type="text" id="caratulaTitulo" placeholder="Automático si se omite"></div>
+                    <div><label class="toggle-row" style="margin-bottom:4px;"><span style="font-size:12px; color:var(--text-muted); font-weight:500;">Incluir Autor</span><input type="checkbox" id="caratulaIncluirAutor"><div class="toggle-switch"></div></label><div id="caratulaAutorField" style="display:none;"><input type="text" id="caraTulaAutor" placeholder="Nombre completo" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px;"></div></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Institución</label><input type="text" id="caraTulaInstitucion" placeholder="Ej: UNIFRANZ"></div>
+                    <div class="input-group"><label>Fecha</label><input type="text" id="caraTulaFecha" placeholder="Ej: 2026"></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tamaño Título (pt)</label><input type="number" id="cfgCaratulaTitleSize" value="20"></div>
+                    <div class="input-group"><label>Tamaño Autor (pt)</label><input type="number" id="cfgCaratulaAutorSize" value="13"></div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group"><label>Color Título</label><div class="color-picker-row"><input type="color" id="cfgCaratulaTitleColor" value="#000000"><input type="text" id="cfgCaratulaTitleColorHex" value="#000000" class="hex-input" maxlength="7"></div></div>
+                    <div class="input-group"><label>Color Autor/Resto</label><div class="color-picker-row"><input type="color" id="cfgCaratulaAutorColor" value="#333333"><input type="text" id="cfgCaratulaAutorColorHex" value="#333333" class="hex-input" maxlength="7"></div></div>
+                </div>
+                <div style="border-top:1px solid var(--border-color); margin-top:16px; padding-top:14px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <span class="section-title" style="margin:0;"><i class="fa-solid fa-file-circle-minus"></i> Contratapa (Al Cierre)</span>
+                        <label class="toggle-mini"><input type="checkbox" id="enableContratapa"><span class="toggle-mini-switch"></span></label>
+                    </div>
+                    <div class="info-box" style="margin-top:8px; background:var(--bg-panel-secondary); padding:8px; border-radius:6px; font-size:0.8rem; color:var(--text-muted);">
+                        <i class="fa-solid fa-info-circle"></i> Usa la imagen subida en la barra lateral para generar una hoja final muda.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="config-footer">
+            <button id="saveConfigBtn" class="btn-primary" style="width:100%; justify-content:center;"><i class="fa-solid fa-check"></i> Aplicar Cambios al PDF</button>
+        </div>
+    </div>
+</div>
+<style>
+:root{--bg-app:#f8fafc;--bg-panel:#ffffff;--bg-panel-secondary:#f1f5f9;--primary:#ef4444;--primary-hover:#dc2626;--primary-light:#fef2f2;--text-main:#0f172a;--text-muted:#64748b;--text-dark:#020617;--border-color:#e2e8f0;--border-focus:#ef4444;--success:#10b981;--warning:#f59e0b;--error:#ef4444;--border-ghost:#cbd5e1;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px -1px rgba(0,0,0,0.1);--shadow-paper:0 1px 3px rgba(0,0,0,0.1),0 1px 2px rgba(0,0,0,0.06);--font-mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background-color:var(--bg-app);color:var(--text-main);height:100vh;overflow:hidden;font-size:14px}
+.app-container{display:grid;grid-template-columns:280px 1fr 320px;height:100vh;width:100vw;overflow:hidden}
+.sidebar-left{background:var(--bg-panel);border-right:1px solid var(--border-color);display:flex;flex-direction:column;z-index:10;overflow-y:auto}
+.sidebar-right{background:var(--bg-panel);border-left:1px solid var(--border-color);display:flex;flex-direction:column;z-index:10;overflow-y:auto}
+.sidebar-header{padding:20px;border-bottom:1px solid var(--border-color);background:var(--bg-panel-secondary)}
+.sidebar-header h3{font-size:14px;font-weight:600;color:var(--text-main);text-transform:uppercase;letter-spacing:0.5px}
+.brand{padding:24px 20px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:var(--bg-panel);border-bottom:1px solid var(--border-color);margin-bottom:0}
+.logo-text{font-family:'Inter',sans-serif;display:flex;flex-direction:column;line-height:1.1}
+.brand-highlight{font-weight:800;font-size:1.5rem;color:var(--text-dark);letter-spacing:-0.5px;text-transform:uppercase}
+.brand-sub{font-weight:500;font-size:0.8rem;color:var(--primary);letter-spacing:1px;margin-top:4px;text-transform:uppercase}
+.version{font-size:0.65rem;color:var(--text-muted);margin-top:8px;font-weight:700;background:var(--bg-app);border:1px solid var(--border-color);padding:3px 6px;border-radius:4px;display:inline-block;font-family:var(--font-mono)}
+.settings-group{padding:24px 20px;border-bottom:1px solid var(--border-color)}
+.settings-group h3{font-size:11px;text-transform:uppercase;color:var(--text-main);font-weight:700;letter-spacing:0.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;cursor:pointer}
+.toggle-row input{display:none}
+.toggle-switch{width:36px;height:20px;background:#ccc;border-radius:10px;position:relative;transition:0.3s}
+.toggle-switch::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:2px;left:2px;transition:0.3s;box-shadow:0 1px 2px rgba(0,0,0,0.2)}
+input:checked+.toggle-switch{background:var(--primary)}
+input:checked+.toggle-switch::after{transform:translateX(16px)}
+.header-upload-box{width:100%;height:100px;background:var(--bg-panel-secondary);border:1px dashed var(--border-ghost);border-radius:6px;display:flex;justify-content:center;align-items:center;cursor:pointer;background-size:cover;background-position:center;transition:all 0.2s}
+.header-upload-box:hover{border-color:var(--primary);background-color:var(--primary-light)}
+.preview-area{display:flex;flex-direction:column;align-items:center;color:var(--text-muted);font-size:11px;font-weight:500}
+.paper-selector{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.paper-card{background:var(--bg-panel);border:1px solid var(--border-color);border-radius:6px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.15s}
+.paper-card:hover{border-color:var(--primary);box-shadow:var(--shadow-sm)}
+.paper-card.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.paper-card .icon{font-size:16px;margin-bottom:6px}
+.paper-card span{font-size:11px;font-weight:600}
+.workspace{display:flex;flex-direction:column;background:var(--bg-app);overflow:hidden}
+.workspace-header{height:60px;background:var(--bg-panel);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.workspace-header h2{font-size:14px;font-weight:700;color:var(--text-dark)}
+.workspace-header .badge{background:var(--bg-panel-secondary);color:var(--success);padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;border:1px solid #d1fae5;letter-spacing:0.5px;text-transform:uppercase}
+.workspace-body{flex:1;display:flex;flex-direction:column;padding:20px;overflow-y:auto}
+.hero-zone{flex:1;display:flex;justify-content:center;align-items:center;min-height:400px}
+.hero-zone.hidden{display:none}
+.hero-content{background:var(--bg-panel);width:600px;height:600px;max-height:100%;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--border-color);transition:transform 0.2s;border-radius:6px}
+.main-icon{font-size:64px;color:var(--primary);margin-bottom:25px}
+.hero-content h2{font-size:20px;color:var(--text-main);margin-bottom:15px;font-weight:600}
+.hero-content p{color:var(--text-muted);margin-bottom:30px;max-width:80%;line-height:1.6;font-size:15px}
+.btn-select{padding:10px 20px;background:var(--bg-panel);border:1px solid var(--border-ghost);border-radius:6px;color:var(--text-main);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s ease;font-size:13px;box-shadow:var(--shadow-sm)}
+.btn-select:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);box-shadow:var(--shadow-md)}
+.production-queue{flex:1;display:none;flex-direction:column}
+.production-queue.visible{display:flex}
+.queue-header-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.queue-list{display:flex;flex-direction:column;gap:10px}
+.queue-item{background:var(--bg-panel);border:1px solid var(--border-color);padding:12px 16px;border-radius:6px;display:flex;align-items:center;gap:12px;box-shadow:none;transition:all 0.15s}
+.queue-item:hover{border-color:var(--primary);background:var(--primary-light)}
+.q-icon{font-size:20px;color:var(--text-muted)}
+.q-name{flex:1;font-weight:600;font-size:13px;color:var(--text-dark)}
+.q-size{color:var(--text-muted);font-size:11px;width:80px;font-family:var(--font-mono)}
+.q-status{padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;background:var(--bg-panel-secondary);color:var(--text-muted);border:1px solid var(--border-color);text-transform:uppercase;letter-spacing:0.5px}
+.q-status.processing{background:#fee2e2;color:#b91c1c}
+.q-status.done{background:#d1fae5;color:#047857}
+.q-actions{display:flex;gap:8px}
+.btn-mini{padding:6px 12px;border-radius:4px;font-size:12px;text-decoration:none;font-weight:500;display:flex;align-items:center;gap:6px;background:var(--primary);color:white;transition:0.2s;border:none;cursor:pointer}
+.btn-mini:hover{background:var(--primary-hover)}
+.btn-mini.btn-outline{background:white;color:var(--text-main);border:1px solid var(--border-color)}
+.btn-mini.btn-outline:hover{background:var(--bg-panel-secondary);border-color:var(--primary);color:var(--primary)}
+.btn-mini.disabled{background:#e2e8f0;color:#94a3b8;pointer-events:none}
+.btn-primary{background:var(--primary);color:white;border:none;padding:12px 24px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.15s ease;box-shadow:0 2px 4px rgba(239,68,68,0.2);text-transform:uppercase;letter-spacing:0.5px}
+.btn-primary:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 6px rgba(239,68,68,0.3)}
+.btn-primary:disabled{background:#cbd5e1;color:#64748b;cursor:not-allowed;box-shadow:none;transform:none}
+.console-panel{margin-top:auto;border-top:1px solid var(--border-color);background:var(--bg-app);color:var(--text-dark);display:flex;flex-direction:column;height:250px}
+.console-header-static{background:var(--bg-panel);padding:8px 15px;font-size:10px;font-weight:700;letter-spacing:1px;border-bottom:1px solid var(--border-color);text-transform:uppercase;display:flex;align-items:center;gap:8px;color:var(--text-muted)}
+.console-logs-static{flex:1;overflow-y:auto;padding:15px;font-family:var(--font-mono);font-size:12px;line-height:1.6;background:var(--bg-app)}
+.log-item{margin-bottom:6px;word-wrap:break-word;border-left:2px solid transparent;padding-left:8px;color:#334155}
+.log-item.info{color:#0f172a;border-left-color:#94a3b8}
+.log-item.success{color:#047857;border-left-color:#10b981}
+.log-item.error{color:#b91c1c;border-left-color:#ef4444}
+.log-item.warning{color:#fb923c;font-weight:600}
+.config-modal-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.config-modal-overlay.active{opacity:1;pointer-events:auto}
+.config-window{width:680px;max-height:88vh;display:flex;flex-direction:column;background:#ffffff;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 12px 32px rgba(0,0,0,0.12),0 4px 6px rgba(0,0,0,0.04);transform:translateY(20px);transition:transform 0.2s cubic-bezier(0.16,1,0.3,1)}
+.config-modal-overlay.active .config-window{transform:translateY(0)}
+.config-header{padding:16px 24px;background:#ffffff;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-top-left-radius:6px;border-top-right-radius:6px}
+.config-title{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;color:#0f172a;letter-spacing:-0.3px}
+.btn-close-config{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px}
+.config-tabs{display:flex;flex-wrap:wrap;background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:0 8px;gap:2px}
+.tab-btn{padding:12px 16px;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;font-size:13px;font-weight:600;color:#64748b;transition:all 0.15s ease;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tab-btn:hover{color:#0f172a;background:#f1f5f9}
+.tab-btn.active{color:#2563eb;border-bottom-color:#2563eb;background:#ffffff}
+.tab-btn-divider{border-left:1px solid #e2e8f0;margin-left:6px;padding-left:16px}
+.config-body{padding:20px;display:flex;flex-direction:column;gap:15px;overflow-y:auto;flex:1}
+.tab-content{display:flex;flex-direction:column;gap:15px;animation:fadeIn 0.2s ease-in-out}
+.tab-content.hidden-tab{display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.input-group label{display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:#475569}
+.input-group select,.input-group input:not([type="checkbox"]):not([type="color"]){width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:4px;font-size:13px;font-family:inherit;color:#0f172a;background-color:#ffffff;transition:border-color 0.15s,box-shadow 0.15s}
+.input-group select:focus,.input-group input:not([type="checkbox"]):not([type="color"]):focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.color-picker-row{display:flex;align-items:center;gap:10px}
+input[type="color"]{width:40px;height:40px;padding:0;border:none;background:none;cursor:pointer}
+.hex-input{width:90px;padding:8px;border:1px solid #ddd;border-radius:4px;font-family:monospace;font-size:14px;text-transform:uppercase;text-align:center;cursor:pointer}
+.section-title{font-size:12px;text-transform:uppercase;color:#0f172a;font-weight:800;letter-spacing:0.5px;margin-top:12px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:6px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.config-footer{padding:15px 20px;border-top:1px solid var(--border-color);background:var(--bg-panel-secondary);display:flex;justify-content:flex-end;flex-shrink:0}
+.toggle-mini{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.toggle-mini input{opacity:0;width:0;height:0;position:absolute}
+.toggle-mini-switch{width:28px;height:16px;background:#cbd5e1;border-radius:8px;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle-mini-switch::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle-mini input:checked+.toggle-mini-switch{background:var(--primary)}
+.toggle-mini input:checked+.toggle-mini-switch::after{transform:translateX(12px)}
+@media(max-width:1100px){.app-container{grid-template-columns:240px 1fr 280px}}
+@media(max-width:900px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.sidebar-left,.sidebar-right{max-height:300px}.hero-content{width:100%;height:auto;min-height:300px}}
+</style>
+<script>
+// ═══ EDTech Config System v2.0 (Web) ═══
+window._edtechImgStore = window._edtechImgStore || {};
+function edtechRegisterImgUpload(storeKey, zoneId, inputId, previewId) {
+    const zone = document.getElementById(zoneId), input = document.getElementById(inputId), preview = document.getElementById(previewId);
+    if (!zone || !input) return;
+    zone.addEventListener('click', () => input.click());
+    input.addEventListener('change', (e) => {
+        const file = e.target.files[0]; if (!file) return;
+        const isRaster = file.type.startsWith('image/') && !file.name.toLowerCase().match(/\.(svg|emf|wmf)$/);
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const dataUrl = ev.target.result;
+            window._edtechImgStore[storeKey] = { dataUrl, filename: file.name, mimeType: file.type || 'application/octet-stream' };
+            if (isRaster) { zone.style.backgroundImage = `url(${dataUrl})`; zone.style.backgroundSize = 'contain'; zone.style.backgroundRepeat = 'no-repeat'; zone.style.backgroundPosition = 'center'; if (preview) preview.style.opacity = '0'; }
+            else { zone.style.backgroundImage = 'none'; if (preview) { preview.style.opacity = '1'; preview.innerHTML = `<i class="fa-solid fa-vector-square" style="font-size:16px;color:var(--primary);"></i><span style="font-size:9px;margin-top:4px;word-break:break-all;text-align:center;">${file.name}</span>`; } }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+const EDTechConfig = (() => {
+    const TOOL_EXT = { pdf: { ext: 'epd', label: 'EDTech PDF', mime: 'application/edtech-pdf' } };
+    function _detectTool() { return 'pdf'; }
+    const _g = (id) => { const el = document.getElementById(id); return el ? el.value : null; };
+    const _gb = (id) => { const el = document.getElementById(id); return el ? el.checked : null; };
+    const _gn = (id) => { const el = document.getElementById(id); return el ? parseFloat(el.value) || null : null; };
+    const _s = (id, v) => { const el = document.getElementById(id); if (el && v !== null && v !== undefined) el.value = String(v); };
+    const _sb = (id, v) => { const el = document.getElementById(id); if (el && v !== null && v !== undefined) el.checked = Boolean(v); };
+    function collectConfig() {
+        return {
+            font_name: _g('cfgFont'), font_size: _gn('cfgFontSize'), line_spacing: _g('cfgLineSpacing'), link_color: _g('cfgLinkColor'),
+            text_alignment: _g('cfgTextAlignment'), paper_size: document.querySelector('.paper-card.active')?.dataset.value || 'letter',
+            margin_top: _gn('cfgMarginTop'), margin_bottom: _gn('cfgMarginBottom'), margin_left: _gn('cfgMarginLeft'), margin_right: _gn('cfgMarginRight'),
+            page_num_format: _g('cfgPageNumFormat'), h1_size: _gn('cfgH1Size'), h1_color: _g('cfgH1Color'), h2_size: _gn('cfgH2Size'), h2_color: _g('cfgH2Color'),
+            table_header_bg: _g('cfgTableHeaderBg'), table_header_text: _g('cfgTableHeaderText'), table_border_color: _g('cfgTableBorderColor'),
+            table_border_width: _gn('cfgTableBorderWidth'), table_font_size: _gn('cfgTableFontSize'), table_row_even: _g('cfgTableRowEven'),
+            table_row_odd: _g('cfgTableRowOdd'), table_padding: _gn('cfgTablePadding'),
+            header_text_enabled: _gb('enableHeaderText'), header_type: _g('cfgHeaderType'), header_text: _g('cfgHeaderText'), header_img_height: _gn('cfgHeaderImgHeight'),
+            apa_enabled: _gb('enableApaBlock'), apa_bg: _g('cfgApaBg'), apa_border: _g('cfgApaBorder'), apa_font_size: _gn('cfgApaFontSize'), apa_text_color: _g('cfgApaTextColor'),
+            caratula_enabled: _gb('enableCaratula'), caratula_titulo: _g('caratulaTitulo'), caratula_incluir_autor: _gb('caratulaIncluirAutor'),
+            caratula_autor: _g('caraTulaAutor'), caratula_institucion: _g('caraTulaInstitucion'), caratula_fecha: _g('caraTulaFecha'),
+            caratula_title_size: _gn('cfgCaratulaTitleSize'), caratula_title_color: _g('cfgCaratulaTitleColor'),
+            caratula_autor_size: _gn('cfgCaratulaAutorSize'), caratula_autor_color: _g('cfgCaratulaAutorColor'),
+            caratula_title_x: _gn('cfgCaratulaTitleX'), caratula_title_y: _gn('cfgCaratulaTitleY'),
+            contratapa_enabled: _gb('enableContratapa'), file_prefix: _g('filePrefix'), file_suffix: _g('fileSuffix'),
+        };
+    }
+    function collectImages() {
+        const store = window._edtechImgStore || {}, images = {};
+        ['caratula', 'contratapa', 'header', 'footer', 'hojaFinal'].forEach(key => { if (store[key]) images[key] = { dataUrl: store[key].dataUrl, filename: store[key].filename, mimeType: store[key].mimeType }; });
+        return images;
+    }
+    function applyConfig(config) {
+        if (!config) return;
+        const gc = (s, c) => { const v = config[s]; return (v !== null && v !== undefined) ? v : config[c]; };
+        _s('cfgFont', gc('font_name', 'fontPrompt')); _s('cfgFontSize', gc('font_size', 'fontSize')); _s('cfgLineSpacing', gc('line_spacing', 'lineSpacing'));
+        _s('cfgLinkColor', gc('link_color', 'linkColor')); _s('cfgLinkColorHex', gc('link_color', 'linkColor'));
+        _s('cfgTextAlignment', gc('text_alignment', 'textAlignment'));
+        const ps = gc('paper_size', 'paperSize'); if (ps) document.querySelectorAll('.paper-card').forEach(c => c.classList.toggle('active', c.dataset.value === ps));
+        _s('cfgMarginTop', gc('margin_top', 'marginTop')); _s('cfgMarginBottom', gc('margin_bottom', 'marginBottom'));
+        _s('cfgMarginLeft', gc('margin_left', 'marginLeft')); _s('cfgMarginRight', gc('margin_right', 'marginRight'));
+        _s('cfgPageNumFormat', gc('page_num_format', 'pageNumFormat'));
+        _s('cfgH1Size', gc('h1_size', 'h1Size')); _s('cfgH1Color', gc('h1_color', 'h1Color')); _s('cfgH1ColorHex', gc('h1_color', 'h1Color'));
+        _s('cfgH2Size', gc('h2_size', 'h2Size')); _s('cfgH2Color', gc('h2_color', 'h2Color')); _s('cfgH2ColorHex', gc('h2_color', 'h2Color'));
+        _s('cfgTableHeaderBg', gc('table_header_bg', 'tableHeaderBg')); _s('cfgTableHeaderBgHex', gc('table_header_bg', 'tableHeaderBg'));
+        _s('cfgTableHeaderText', gc('table_header_text', 'tableHeaderText')); _s('cfgTableHeaderTextHex', gc('table_header_text', 'tableHeaderText'));
+        _s('cfgTableBorderColor', gc('table_border_color', 'tableBorderColor')); _s('cfgTableBorderColorHex', gc('table_border_color', 'tableBorderColor'));
+        _s('cfgTableBorderWidth', gc('table_border_width', 'tableBorderWidth'));
+        _s('cfgTableFontSize', gc('table_font_size', 'tableFontSize')); _s('cfgTableRowEven', gc('table_row_even', 'tableRowEven'));
+        _s('cfgTableRowEvenHex', gc('table_row_even', 'tableRowEven')); _s('cfgTableRowOdd', gc('table_row_odd', 'tableRowOdd'));
+        _s('cfgTableRowOddHex', gc('table_row_odd', 'tableRowOdd')); _s('cfgTablePadding', gc('table_padding', 'tablePadding'));
+        _sb('enableHeaderText', gc('header_text_enabled', 'headerTextEnabled'));
+        _s('cfgHeaderType', gc('header_type', 'headerType')); _s('cfgHeaderText', gc('header_text', 'headerText'));
+        _s('cfgHeaderImgHeight', gc('header_img_height', 'headerImgHeight'));
+        const hte = gc('header_text_enabled', 'headerTextEnabled'); const htz = document.getElementById('headerTextZone'); if (htz) htz.style.display = hte === false ? 'none' : 'block';
+        const ht = gc('header_type', 'headerType'); const chg = document.getElementById('customHeaderGroup'); if (chg) chg.style.display = ht === 'custom' ? 'block' : 'none';
+        _sb('enableApaBlock', gc('apa_enabled', 'apaEnabled')); _s('cfgApaBg', gc('apa_bg', 'apaBg')); _s('cfgApaBgHex', gc('apa_bg', 'apaBg'));
+        _s('cfgApaBorder', gc('apa_border', 'apaBorder')); _s('cfgApaBorderHex', gc('apa_border', 'apaBorder'));
+        _s('cfgApaFontSize', gc('apa_font_size', 'apaFontSize')); _s('cfgApaTextColor', gc('apa_text_color', 'apaTextColor'));
+        _s('cfgApaTextColorHex', gc('apa_text_color', 'apaTextColor'));
+        _sb('enableCaratula', gc('caratula_enabled', 'caratulaEnabled')); _s('caratulaTitulo', gc('caratula_titulo', 'caratulaTitulo'));
+        _sb('caratulaIncluirAutor', gc('caratula_incluir_autor', 'caratulaIncluirAutor')); _s('caraTulaAutor', gc('caratula_autor', 'caratulaAutor'));
+        _s('caraTulaInstitucion', gc('caratula_institucion', 'caratulaInstitucion')); _s('caraTulaFecha', gc('caratula_fecha', 'caratulaFecha'));
+        _s('cfgCaratulaTitleSize', gc('caratula_title_size', 'caratulaTitleSize')); _s('cfgCaratulaTitleColor', gc('caratula_title_color', 'caratulaTitleColor'));
+        _s('cfgCaratulaTitleColorHex', gc('caratula_title_color', 'caratulaTitleColor'));
+        _s('cfgCaratulaAutorSize', gc('caratula_autor_size', 'caratulaAutorSize')); _s('cfgCaratulaAutorColor', gc('caratula_autor_color', 'caratulaAutorColor'));
+        _s('cfgCaratulaAutorColorHex', gc('caratula_autor_color', 'caratulaAutorColor'));
+        _s('cfgCaratulaTitleX', gc('caratula_title_x', 'caratulaTitleX')); _s('cfgCaratulaTitleY', gc('caratula_title_y', 'caratulaTitleY'));
+        const af = document.getElementById('caratulaAutorField'); if (af) af.style.display = gc('caratula_incluir_autor', 'caratulaIncluirAutor') ? 'block' : 'none';
+        _sb('enableContratapa', gc('contratapa_enabled', 'contratapaEnabled'));
+        _s('filePrefix', gc('file_prefix', 'filePrefix')); _s('fileSuffix', gc('file_suffix', 'fileSuffix'));
+    }
+    function applyImages(images) {
+        if (!images) return;
+        const zoneMap = { caratula: { z: 'caratulaImgDropZone', p: 'caratulaImgPreview' }, contratapa: { z: 'contratapaImgDropZone', p: 'contratapaImgPreview' }, header: { z: 'headerDropZone', p: 'headerPreview' } };
+        Object.entries(images).forEach(([key, imgData]) => {
+            if (!imgData || !imgData.dataUrl) return; const m = zoneMap[key]; if (!m) return;
+            const zone = document.getElementById(m.z), preview = document.getElementById(m.p);
+            window._edtechImgStore[key] = imgData;
+            const isRaster = imgData.dataUrl.startsWith('data:image/') && !imgData.filename?.toLowerCase().match(/\.(svg|emf|wmf)$/);
+            if (zone) { if (isRaster) { zone.style.backgroundImage = `url(${imgData.dataUrl})`; zone.style.backgroundSize = 'contain'; zone.style.backgroundRepeat = 'no-repeat'; zone.style.backgroundPosition = 'center'; if (preview) preview.style.opacity = '0'; }
+            else { zone.style.backgroundImage = 'none'; if (preview) { preview.style.opacity = '1'; preview.innerHTML = `<i class="fa-solid fa-vector-square" style="font-size:16px;color:var(--primary);"></i><span style="font-size:9px;margin-top:4px;">${imgData.filename || key}</span>`; } } }
+        });
+    }
+    function save() {
+        const payload = { _meta: { version: '2.0', tool: 'EDTech PDF', tool_key: 'pdf', created: new Date().toISOString(), app: 'EDTech Suite v3.5 Web' }, config: collectConfig(), images: collectImages() };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `edtech-config-${new Date().toISOString().slice(0,10)}.epd`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href); return 'epd';
+    }
+    function load(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => { try { const p = JSON.parse(e.target.result); if (!p._meta || !p.config) { reject(new Error('Archivo inválido')); return; } applyConfig(p.config); applyImages(p.images || {}); resolve(p._meta); } catch (err) { reject(new Error(`Error: ${err.message}`)); } };
+            reader.onerror = () => reject(new Error('Error leyendo archivo'));
+            reader.readAsText(file);
+        });
+    }
+    return { save, load, collectConfig, applyConfig, collectImages, applyImages, TOOL_EXT, _detectTool };
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const consoleLogs = document.getElementById('consoleLogs');
+    const productionQueue = document.getElementById('productionQueue');
+    const queueList = document.getElementById('queueList');
+    const queueCount = document.getElementById('queueCount');
+    const clearQueueBtn = document.getElementById('clearQueueBtn');
+    const processBtn = document.getElementById('processBtn');
+    const clipboardZone = document.getElementById('clipboardZone');
+    let selectedFiles = new Map();
+    let paperSize = 'letter';
+
+    function log(msg, type = 'info') {
+        if (!consoleLogs) return;
+        const div = document.createElement('div'); div.className = `log-item ${type}`;
+        div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        consoleLogs.appendChild(div); consoleLogs.scrollTop = consoleLogs.scrollHeight;
+    }
+
+    // Config Modal
+    const configModal = document.getElementById('configModal');
+    const sidebarConfigBtn = document.getElementById('openConfigBtnSidebar');
+    const closeConfigBtn = document.getElementById('closeConfigBtn');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    if (sidebarConfigBtn && configModal) sidebarConfigBtn.addEventListener('click', () => configModal.classList.add('active'));
+    if (closeConfigBtn && configModal) { closeConfigBtn.addEventListener('click', () => configModal.classList.remove('active')); configModal.addEventListener('click', (e) => { if (e.target === configModal) configModal.classList.remove('active'); }); }
+    if (saveConfigBtn && configModal) saveConfigBtn.addEventListener('click', () => { configModal.classList.remove('active'); log('Configuración aplicada.', 'success'); });
+
+    // Template Import/Export
+    const importTemplateBtn = document.getElementById('importTemplateBtn');
+    const exportTemplateBtn = document.getElementById('exportTemplateBtn');
+    const templateInput = document.getElementById('templateInput');
+    if (exportTemplateBtn) exportTemplateBtn.addEventListener('click', () => { try { EDTechConfig.save(); log('Configuración guardada como .epd', 'success'); } catch (e) { log('Error: ' + e.message, 'error'); } });
+    if (importTemplateBtn && templateInput) {
+        importTemplateBtn.addEventListener('click', () => templateInput.click());
+        templateInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            try { importTemplateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando...';
+                const meta = await EDTechConfig.load(file);
+                if (meta) log(`Plantilla cargada: ${meta.tool} (${meta.created?.slice(0, 10)})`, 'success');
+            } catch (err) { log('Error: ' + err.message, 'error'); }
+            finally { importTemplateBtn.innerHTML = '<i class="fa-solid fa-file-arrow-up"></i> Cargar'; templateInput.value = ''; }
+        });
+    }
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const parent = btn.parentElement; parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+            const modalBody = btn.closest('.config-window').querySelector('.config-body');
+            modalBody.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden-tab'));
+            const t = document.getElementById(btn.getAttribute('data-tab')); if (t) t.classList.remove('hidden-tab');
+        });
+    });
+
+    // Image uploads
+    setTimeout(() => {
+        edtechRegisterImgUpload('caratula', 'caratulaImgDropZone', 'caratulaImgInput', 'caratulaImgPreview');
+        edtechRegisterImgUpload('contratapa', 'contratapaImgDropZone', 'contratapaImgInput', 'contratapaImgPreview');
+        edtechRegisterImgUpload('header', 'headerDropZone', 'headerInput', 'headerPreview');
+        // Author toggle
+        const at = document.getElementById('caratulaIncluirAutor'), af = document.getElementById('caratulaAutorField');
+        if (at && af) at.addEventListener('change', () => { af.style.display = at.checked ? 'block' : 'none'; });
+        // Header type toggle
+        const cht = document.getElementById('cfgHeaderType'), chg = document.getElementById('customHeaderGroup');
+        if (cht && chg) cht.addEventListener('change', () => { chg.style.display = cht.value === 'custom' ? 'block' : 'none'; });
+
+        // Carátula drag editor
+        (function() {
+            const container = document.getElementById('caratulaPreviewContainer'); if (!container) return;
+            const labels = container.querySelectorAll('.caratula-drag-label');
+            let active = null, sx, sy, sl, st;
+            labels.forEach(l => {
+                l.addEventListener('mouseenter', () => l.style.borderColor = '#3b82f6');
+                l.addEventListener('mouseleave', () => { if (active !== l) l.style.borderColor = 'transparent'; });
+                l.addEventListener('mousedown', (e) => { e.preventDefault(); active = l; l.style.cursor = 'grabbing'; l.style.borderColor = '#3b82f6';
+                    sx = e.clientX; sy = e.clientY; sl = parseFloat(l.style.left) || 50; st = parseFloat(l.style.top) || 50; });
+            });
+            document.addEventListener('mousemove', (e) => { if (!active) return;
+                const r = container.getBoundingClientRect();
+                const nx = Math.max(5, Math.min(95, sl + ((e.clientX - sx) / r.width) * 100));
+                const ny = Math.max(5, Math.min(95, st + ((e.clientY - sy) / r.height) * 100));
+                active.style.left = nx + '%'; active.style.top = ny + '%';
+                if (active.id === 'caratulaDragTitle') { const ix = document.getElementById('cfgCaratulaTitleX'), iy = document.getElementById('cfgCaratulaTitleY');
+                    if (ix) ix.value = Math.round(nx); if (iy) iy.value = Math.round(ny); }
+            });
+            document.addEventListener('mouseup', () => { if (active) { active.style.cursor = 'grab'; active.style.borderColor = 'transparent'; active = null; } });
+            // Live text preview
+            const fm = { caratulaTitulo: { el: 'caratulaDragTitle', fb: 'TÍTULO DEL DOCUMENTO', u: true }, caraTulaAutor: { el: 'caratulaDragAutor', fb: 'Autor (opcional)', u: false },
+                caraTulaInstitucion: { el: 'caratulaDragInstitucion', fb: 'INSTITUCIÓN', u: true }, caraTulaFecha: { el: 'caratulaDragFecha', fb: 'Fecha', u: false } };
+            Object.entries(fm).forEach(([iid, cfg]) => { const i = document.getElementById(iid); if (i) i.addEventListener('input', () => { const d = document.getElementById(cfg.el); if (d) { const t = i.value || cfg.fb; d.textContent = cfg.u ? t.toUpperCase() : t; } }); });
+            function syncBg() { const bg = document.getElementById('caratulaPreviewBg'); if (!bg) return; const s = window._edtechImgStore?.caratula; bg.style.backgroundImage = s?.dataUrl ? `url(${s.dataUrl})` : ''; }
+            setInterval(syncBg, 1000); syncBg();
+        })();
+    }, 100);
+
+    // URL Classification
+    function classifyUrl(url) {
+        try { const u = new URL(url), h = u.hostname.replace('www.','').toLowerCase();
+            const login = ['facebook.com','fb.com','linkedin.com','instagram.com','twitter.com','x.com','tiktok.com','pinterest.com'];
+            if (login.some(d => h === d || h.endsWith('.'+d))) return { risk:'high', label:'⚠ Login requerido', color:'#dc2626', bg:'#fee2e2', tip:'Red social con login.' };
+            const paywall = ['wsj.com','ft.com','hbr.org','economist.com','nytimes.com','bloomberg.com','medium.com'];
+            if (paywall.some(d => h.includes(d))) return { risk:'high', label:'🔒 Paywall', color:'#dc2626', bg:'#fee2e2', tip:'Posible paywall.' };
+            const academic = ['scielo.org','redalyc.org','researchgate.net','academia.edu','dialnet.unirioja.es'];
+            if (academic.some(d => h.includes(d))) return { risk:'medium', label:'📄 Académico', color:'#7c3aed', bg:'#ede9fe', tip:'Artículo académico.' };
+            return { risk:'ok', label:'', color:'', bg:'', tip:'' };
+        } catch(e) { return { risk:'high', label:'❌ URL inválida', color:'#dc2626', bg:'#fee2e2', tip:'URL inválida.' }; }
+    }
+
+    function handleUrl(url) {
+        if (!selectedFiles.has(url)) { selectedFiles.set(url, { type: 'url', url, status: 'pend', resultPdf: null }); renderQueue(); log(`URL añadida: ${url}`, 'success'); }
+        else log('La URL ya está en la cola.', 'info');
+    }
+
+    function renderQueue() {
+        if (selectedFiles.size > 0) { if (clipboardZone) clipboardZone.style.display = 'none'; productionQueue.classList.add('visible'); productionQueue.style.display = 'flex'; processBtn.disabled = false; }
+        else { productionQueue.classList.remove('visible'); productionQueue.style.display = 'none'; if (clipboardZone) clipboardZone.style.display = 'flex'; processBtn.disabled = true; }
+        const hasPdfStamp = [...selectedFiles.values()].some(d => d.type === 'pdf_stamp');
+        const sog = document.getElementById('pdfStampOptionsGroup'); if (sog) sog.style.display = hasPdfStamp ? 'block' : 'none';
+        queueCount.innerText = selectedFiles.size; queueList.innerHTML = '';
+        selectedFiles.forEach((data, name) => {
+            let infoHtml = '', iconClass = 'fa-file', iconColor = '';
+            if (data.type === 'url' || data.type === 'xls_url') {
+                iconClass = 'fa-globe'; const r = classifyUrl(data.url);
+                iconColor = data.type === 'xls_url' ? '#10b981' : (r.risk === 'high' ? '#dc2626' : r.risk === 'medium' ? '#d97706' : 'var(--primary)');
+                const rb = r.label ? `<span title="${r.tip}" style="font-size:0.68rem;background:${r.bg};color:${r.color};border-radius:4px;padding:1px 6px;font-weight:600;cursor:help;">${r.label}</span>` : '';
+                const folderBadge = data.type === 'xls_url' ? `<span style="font-size:0.7rem;background:#d1fae5;color:#065f46;border-radius:4px;padding:1px 6px;font-weight:600;"><i class="fa-solid fa-folder" style="margin-right:3px;"></i>${data.xlsFolder}</span><span style="font-size:0.7rem;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 6px;font-weight:600;">${data.xlsPrefix}</span>` : '';
+                infoHtml = `<div class="q-info" style="display:flex;align-items:center;gap:15px;flex:1;"><div style="width:40px;height:40px;background:var(--bg-app);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid ${iconClass}" style="color:${iconColor};font-size:1.2rem;"></i></div><div style="display:flex;flex-direction:column;min-width:0;"><span class="q-name" style="font-weight:500;word-break:break-all;font-size:0.9rem;">${data.url}</span><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap;align-items:center;"><span style="font-size:0.75rem;color:var(--text-muted);">Sitio Web</span>${folderBadge}${rb}</div></div></div>`;
+            } else {
+                const sizeMB = data.file ? (data.file.size / 1024 / 1024).toFixed(2) : '0';
+                const isPdfStamp = data.type === 'pdf_stamp'; iconClass = isPdfStamp ? 'fa-file-pdf' : 'fa-file'; iconColor = isPdfStamp ? '#7c3aed' : '#3b82f6';
+                const sb = isPdfStamp ? `<span style="font-size:0.68rem;background:#ede9fe;color:#7c3aed;border-radius:4px;padding:1px 6px;font-weight:600;">✦ Estampar</span>` : '';
+                infoHtml = `<div class="q-info" style="display:flex;align-items:center;gap:15px;flex:1;"><div style="width:40px;height:40px;background:var(--bg-app);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid ${iconClass}" style="color:${iconColor};font-size:1.2rem;"></i></div><div style="display:flex;flex-direction:column;gap:2px;"><span class="q-name" style="font-weight:500;font-size:0.9rem;">${isPdfStamp ? data.filename : name}</span><div style="display:flex;gap:5px;align-items:center;"><span class="q-size" style="font-size:0.75rem;color:var(--text-muted);">${sizeMB} MB</span>${sb}</div></div></div>`;
+            }
+            let statusBadge = '<div class="q-status">Pendiente</div>';
+            if (data.status === 'processing') statusBadge = `<div class="q-status processing"><span>Procesando... ${data.progress||0}%</span><div style="width:100%;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden;"><div style="height:100%;width:${data.progress||0}%;background:var(--primary);border-radius:2px;transition:width 0.4s;"></div></div></div>`;
+            if (data.status === 'done') statusBadge = '<div class="q-status done">Completado</div>';
+            if (data.status === 'error') statusBadge = '<div class="q-status" style="background:#fee2e2;color:#b91c1c;">Error</div>';
+            let actions = data.status === 'done' ? `<div class="btn-mini" style="background:#10b981;"><i class="fa-solid fa-check"></i> OK</div>` : `<div class="btn-mini disabled"><i class="fa-solid fa-clock"></i> Esperando</div>`;
+            const div = document.createElement('div'); div.className = 'queue-item'; div.style.flexWrap = 'wrap';
+            div.innerHTML = `${infoHtml}${statusBadge}<div class="q-actions">${actions}</div>`;
+            queueList.appendChild(div);
+        });
+    }
+
+    // Queue actions
+    if (clearQueueBtn) clearQueueBtn.addEventListener('click', () => { selectedFiles.clear(); renderQueue(); const ga = document.getElementById('globalActions'); if (ga) ga.style.display = 'none'; log('Cola vaciada.', 'info'); });
+
+    // Paste button
+    const pasteBtn = document.getElementById('pasteBtn');
+    if (pasteBtn) pasteBtn.addEventListener('click', async () => {
+        try { const t = await navigator.clipboard.readText(); if (t && t.startsWith('http')) handleUrl(t.trim()); else log('No se detectó URL válida en el portapapeles.', 'error'); }
+        catch (e) { log('Permiso de portapapeles denegado.', 'error'); }
+    });
+
+    // Write URL button (hero)
+    const writeUrlBtn = document.getElementById('writeUrlBtn');
+    if (writeUrlBtn) writeUrlBtn.addEventListener('click', showUrlInput);
+
+    // URL inline bar
+    const addUrlBtn = document.getElementById('addUrlToQueueBtn');
+    const urlInlineInput = document.getElementById('urlInlineInput');
+    const urlInlineConfirm = document.getElementById('urlInlineConfirm');
+    const urlInlineCancel = document.getElementById('urlInlineCancel');
+    const urlInlineBar = document.getElementById('urlInlineBar');
+    function showUrlInput() { if (urlInlineBar) urlInlineBar.style.display = 'flex'; if (urlInlineInput) { urlInlineInput.value = ''; urlInlineInput.focus(); } }
+    function hideUrlInput() { if (urlInlineBar) urlInlineBar.style.display = 'none'; }
+    function submitUrlInput() {
+        const val = urlInlineInput ? urlInlineInput.value.trim() : ''; if (!val) { hideUrlInput(); return; }
+        if (!val.startsWith('http')) { log('URL no válida. Debe comenzar con http/https.', 'error'); return; }
+        if (selectedFiles.has(val)) { log('URL ya en la cola.', 'info'); hideUrlInput(); return; }
+        selectedFiles.set(val, { type: 'url', url: val, status: 'pend', resultPdf: null }); renderQueue(); log(`Enlace añadido: ${val}`, 'info'); hideUrlInput();
+    }
+    if (addUrlBtn) addUrlBtn.addEventListener('click', showUrlInput);
+    if (urlInlineConfirm) urlInlineConfirm.addEventListener('click', submitUrlInput);
+    if (urlInlineCancel) urlInlineCancel.addEventListener('click', hideUrlInput);
+    if (urlInlineInput) { urlInlineInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitUrlInput(); if (e.key === 'Escape') hideUrlInput(); });
+        urlInlineInput.addEventListener('focus', async () => { try { const c = await navigator.clipboard.readText(); if (c && c.startsWith('http') && !urlInlineInput.value) urlInlineInput.value = c.trim(); } catch(_){} });
+    }
+
+    // Paper selector
+    document.querySelectorAll('.paper-card').forEach(card => {
+        card.addEventListener('click', () => { document.querySelectorAll('.paper-card').forEach(c => c.classList.remove('active')); card.classList.add('active');
+            paperSize = card.getAttribute('data-value'); const fd = document.getElementById('footerPaperSize');
+            if (fd) fd.innerText = paperSize === 'letter' ? 'Carta (Letter)' : 'Oficio (Legal)'; log(`Papel: ${paperSize}`, 'info'); });
+    });
+
+    // Color picker sync
+    [['cfgLinkColor','cfgLinkColorHex'],['cfgH1Color','cfgH1ColorHex'],['cfgH2Color','cfgH2ColorHex'],['cfgTableHeaderBg','cfgTableHeaderBgHex'],['cfgTableHeaderText','cfgTableHeaderTextHex'],['cfgTableBorderColor','cfgTableBorderColorHex'],['cfgApaBg','cfgApaBgHex'],['cfgApaBorder','cfgApaBorderHex'],['cfgApaTextColor','cfgApaTextColorHex'],['cfgTableRowEven','cfgTableRowEvenHex'],['cfgTableRowOdd','cfgTableRowOddHex'],['cfgCaratulaTitleColor','cfgCaratulaTitleColorHex'],['cfgCaratulaAutorColor','cfgCaratulaAutorColorHex']].forEach(([p,h]) => {
+        const pe = document.getElementById(p), he = document.getElementById(h); if (!pe || !he) return;
+        pe.addEventListener('input', () => { he.value = pe.value.toUpperCase(); updateTablePreview(); });
+        he.addEventListener('input', () => { if (/^#[0-9A-Fa-f]{6}$/.test(he.value)) { pe.value = he.value; updateTablePreview(); } });
+    });
+
+    // Table preview
+    function updateTablePreview() {
+        const hBg = document.getElementById('cfgTableHeaderBg'), hTx = document.getElementById('cfgTableHeaderText');
+        const rEv = document.getElementById('cfgTableRowEven'), rOd = document.getElementById('cfgTableRowOdd');
+        const bC = document.getElementById('cfgTableBorderColor'), bW = document.getElementById('cfgTableBorderWidth');
+        const fS = document.getElementById('cfgTableFontSize'), pad = document.getElementById('cfgTablePadding');
+        if (!hBg) return;
+        const hR = document.getElementById('previewHeaderRow'), r1 = document.getElementById('previewRow1'), r2 = document.getElementById('previewRow2'), tbl = document.getElementById('tablePreviewPdf');
+        if (!hR || !r1 || !r2 || !tbl) return;
+        const bdr = `${bW.value}px solid ${bC.value}`, fs = fS.value + 'px', pd = pad.value + 'px';
+        hR.style.background = hBg.value; hR.style.color = hTx.value; hR.style.fontSize = fs;
+        Array.from(hR.cells).forEach(c => { c.style.padding = pd; c.style.borderBottom = bdr; });
+        r1.style.background = rOd.value; r1.style.fontSize = fs; Array.from(r1.cells).forEach(c => { c.style.padding = pd; });
+        r2.style.background = rEv.value; r2.style.fontSize = fs; Array.from(r2.cells).forEach(c => { c.style.padding = pd; });
+        tbl.style.border = bdr;
+    }
+    ['cfgTableHeaderBg','cfgTableHeaderText','cfgTableRowEven','cfgTableRowOdd','cfgTableBorderColor','cfgTableBorderWidth','cfgTableFontSize','cfgTablePadding'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateTablePreview); });
+    updateTablePreview();
+
+    // XLS Loader
+    const loadXlsBtn = document.getElementById('loadXlsBtn'), xlsInput = document.getElementById('xlsInput');
+    if (loadXlsBtn && xlsInput) {
+        loadXlsBtn.addEventListener('click', () => xlsInput.click());
+        xlsInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            if (typeof XLSX === 'undefined') { log('SheetJS no disponible.', 'error'); return; }
+            log(`Leyendo XLS: ${file.name}...`, 'info'); loadXlsBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Leyendo...'; loadXlsBtn.disabled = true;
+            try {
+                const ab = await file.arrayBuffer(); const wb = XLSX.read(ab, {type:'array'}); const sh = wb.Sheets[wb.SheetNames[0]];
+                let added = 0, skipped = 0; const fm = {};
+                for (let r = 0; r <= 53; r++) { const c = sh[XLSX.utils.encode_cell({r,c:0})]; if (c?.v) fm[r] = String(c.v).trim(); }
+                for (let r = 1; r <= 54; r++) {
+                    const cC = sh[XLSX.utils.encode_cell({r,c:2})], cD = sh[XLSX.utils.encode_cell({r,c:3})];
+                    const prefix = cC?.v ? String(cC.v).trim() : null, url = cD?.v ? String(cD.v).trim() : null;
+                    if (!url || !url.startsWith('http')) { skipped++; continue; }
+                    let folder = fm[r] || null; if (!folder) { for (let b = r-1; b >= 0; b--) { if (fm[b]) { folder = fm[b]; break; } } }
+                    const sf = folder ? folder.replace(/\s+/g,'_') : 'SIN_CARPETA', sp = prefix ? prefix.replace(/\s+/g,'_') : '';
+                    const key = `xls::${sf}::${sp}::${url}`; if (selectedFiles.has(key)) { skipped++; continue; }
+                    selectedFiles.set(key, { type:'xls_url', url, xlsFolder: sf, xlsPrefix: sp, status:'pend', resultPdf: null }); added++;
+                }
+                renderQueue(); if (added > 0) log(`XLS: ${added} URLs añadidas (${skipped} omitidas).`, 'success'); else log(`XLS: sin URLs válidas (${skipped} omitidas).`, 'error');
+            } catch (err) { log('Error XLS: ' + err.message, 'error'); }
+            finally { loadXlsBtn.innerHTML = '<i class="fa-solid fa-file-excel"></i> Cargar XLS'; loadXlsBtn.disabled = false; xlsInput.value = ''; }
+        });
+    }
+
+    // PDF Stamp Loader
+    const loadPdfBtn = document.getElementById('loadPdfBtn'), pdfStampInput = document.getElementById('pdfStampInput');
+    if (loadPdfBtn && pdfStampInput) {
+        loadPdfBtn.addEventListener('click', () => pdfStampInput.click());
+        pdfStampInput.addEventListener('change', (e) => {
+            const files = e.target.files; if (!files || !files.length) return; let added = 0;
+            Array.from(files).forEach(f => { if (!f.name.toLowerCase().endsWith('.pdf')) { log(`Ignorado: ${f.name}`, 'error'); return; }
+                const key = 'PDF_STAMP::' + f.name; if (!selectedFiles.has(key)) { selectedFiles.set(key, { type:'pdf_stamp', file: f, filename: f.name, status:'pend', resultPath: null }); added++; }
+            });
+            if (added > 0) { renderQueue(); log(`${added} PDF(s) añadidos para estampar.`, 'success'); } pdfStampInput.value = '';
+        });
+    }
+
+    // Process button (Web version: simulates processing since there's no backend)
+    if (processBtn) processBtn.addEventListener('click', async () => {
+        if (selectedFiles.size === 0) return;
+        processBtn.disabled = true; processBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
+        log('Iniciando proceso...', 'info');
+        const items = [...selectedFiles.entries()];
+        for (let i = 0; i < items.length; i++) {
+            const [key, data] = items[i];
+            if (data.status === 'done') continue;
+            data.status = 'processing'; data.progress = 0; renderQueue();
+            // Simulate progress
+            for (let p = 0; p <= 100; p += 20) { data.progress = p; renderQueue(); await new Promise(r => setTimeout(r, 200)); }
+            // In web mode: if it's a URL, we note it requires the desktop app
+            if (data.type === 'url' || data.type === 'xls_url') {
+                data.status = 'done'; log(`✓ ${data.url} — configuración lista. Use la app de escritorio para generar el PDF.`, 'success');
+            } else if (data.type === 'pdf_stamp') {
+                data.status = 'done'; log(`✓ ${data.filename} — plantilla aplicada (requiere backend).`, 'success');
+            }
+            renderQueue();
+        }
+        processBtn.disabled = false; processBtn.innerHTML = '<span>INICIAR PROCESO</span><i class="fa-solid fa-bolt"></i>';
+        const ga = document.getElementById('globalActions'); if (ga) ga.style.display = 'flex';
+        log('Proceso finalizado. Las plantillas están listas para exportar (.epd).', 'success');
+    });
+
+    // Filename preview
+    const fp = document.getElementById('filePrefix'), fs = document.getElementById('fileSuffix'), fnp = document.getElementById('fileNamePreview');
+    function updateFilePreview() { if (fnp) fnp.textContent = `${fp?.value||''}titulo${fs?.value||''}.pdf`; }
+    if (fp) fp.addEventListener('input', updateFilePreview);
+    if (fs) fs.addEventListener('input', updateFilePreview);
+
+    log('Sistema Web iniciado correctamente.', 'success');
+});
+</script>
+</body>
+</html>
