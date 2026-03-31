@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 <div class="app-container">
@@ -155,13 +156,14 @@
         <h3>Acciones</h3>
     </div>
     <div class="settings-group">
-        <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted);">Carpeta de Salida</label>
+        <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted);">Salida</label>
         <div style="display:flex; flex-direction:column; gap:8px;">
-            <input type="text" id="outputFolderDisplay" readonly placeholder="Descargas del navegador"
-                style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px; background:#f8fafc; color:#64748b; font-size:0.85rem;">
-            <div style="background:#fffbeb; border:1px solid #fbbf24; border-radius:6px; padding:8px 10px; font-size:0.75rem; color:#92400e;">
-                <i class="fa-solid fa-info-circle" style="margin-right:4px;"></i>
-                En la versión web, los archivos se descargan directamente al navegador.
+            <div id="outputModeInfo" style="background:#ecfdf5; border:1px solid #6ee7b7; border-radius:6px; padding:10px 12px; font-size:0.8rem; color:#065f46; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-file-zipper" style="font-size:1.1rem; color:#10b981;"></i>
+                <div>
+                    <strong>Descarga automática</strong><br>
+                    <span style="font-size:0.72rem; color:#047857;" id="outputModeLabel">Los archivos se descargarán como ZIP cuando haya 2+ elementos.</span>
+                </div>
             </div>
             <input type="hidden" id="outputFolderValue">
         </div>
@@ -206,9 +208,12 @@
     </div>
     <div id="globalActions" style="display:none; flex-direction:column; gap:15px; padding:20px; border-top:1px solid var(--border-color);">
         <div style="text-align:center;">
-            <h4 style="color:var(--success); margin-bottom:5px;">¡Proceso Finalizado!</h4>
-            <p style="font-size:12px; color:var(--text-muted);">Archivos listos para descarga.</p>
+            <h4 style="color:var(--success); margin-bottom:5px;"><i class="fa-solid fa-circle-check"></i> ¡Proceso Finalizado!</h4>
+            <p style="font-size:12px; color:var(--text-muted);" id="globalActionsMsg">Archivos descargados.</p>
         </div>
+        <button id="downloadZipBtn" style="display:none; width:100%; padding:12px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="fa-solid fa-file-zipper"></i> Descargar ZIP Nuevamente
+        </button>
     </div>
     <div class="console-panel">
         <div class="console-header-static">
@@ -868,29 +873,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Process button (Web version: simulates processing since there's no backend)
+    // Process button — generates EPD config per item, bundles as ZIP if multiple
+    let _lastZipBlob = null;
     if (processBtn) processBtn.addEventListener('click', async () => {
         if (selectedFiles.size === 0) return;
         processBtn.disabled = true; processBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
         log('Iniciando proceso...', 'info');
         const items = [...selectedFiles.entries()];
+        const pendItems = items.filter(([,d]) => d.status !== 'done');
+        const useZip = pendItems.length > 1;
+        let zip = useZip ? new JSZip() : null;
+        const configPayload = { _meta: { version: '2.0', tool: 'EDTech PDF', tool_key: 'pdf', created: new Date().toISOString(), app: 'EDTech Suite v3.5 Web' }, config: EDTechConfig.collectConfig(), images: EDTechConfig.collectImages() };
+        const configJson = JSON.stringify(configPayload, null, 2);
+        const prefix = document.getElementById('filePrefix')?.value || '';
+        const suffix = document.getElementById('fileSuffix')?.value || '';
+
         for (let i = 0; i < items.length; i++) {
             const [key, data] = items[i];
             if (data.status === 'done') continue;
             data.status = 'processing'; data.progress = 0; renderQueue();
-            // Simulate progress
-            for (let p = 0; p <= 100; p += 20) { data.progress = p; renderQueue(); await new Promise(r => setTimeout(r, 200)); }
-            // In web mode: if it's a URL, we note it requires the desktop app
+            for (let p = 0; p <= 100; p += 25) { data.progress = p; renderQueue(); await new Promise(r => setTimeout(r, 150)); }
+
+            // Build per-item EPD with URL/filename baked in
+            const itemConfig = JSON.parse(configJson);
             if (data.type === 'url' || data.type === 'xls_url') {
-                data.status = 'done'; log(`✓ ${data.url} — configuración lista. Use la app de escritorio para generar el PDF.`, 'success');
+                itemConfig.config.source_url = data.url;
+                itemConfig.config.source_type = data.type;
+                if (data.xlsFolder) itemConfig.config.xls_folder = data.xlsFolder;
+                if (data.xlsPrefix) itemConfig.config.xls_prefix = data.xlsPrefix;
             } else if (data.type === 'pdf_stamp') {
-                data.status = 'done'; log(`✓ ${data.filename} — plantilla aplicada (requiere backend).`, 'success');
+                itemConfig.config.source_file = data.filename;
+                itemConfig.config.source_type = 'pdf_stamp';
             }
+            itemConfig.config.file_prefix = prefix;
+            itemConfig.config.file_suffix = suffix;
+            itemConfig.config.paper_size = paperSize;
+            const itemJson = JSON.stringify(itemConfig, null, 2);
+
+            if (useZip) {
+                // Determine filename for this item inside the ZIP
+                let safeName = '';
+                if (data.type === 'url' || data.type === 'xls_url') {
+                    try { safeName = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e) { safeName = 'url_' + i; }
+                    if (data.xlsPrefix) safeName = data.xlsPrefix + '_' + safeName;
+                } else {
+                    safeName = data.filename.replace(/\.pdf$/i, '');
+                }
+                const folder = data.xlsFolder || '';
+                const path = folder ? `${folder}/${prefix}${safeName}${suffix}.epd` : `${prefix}${safeName}${suffix}.epd`;
+                zip.file(path, itemJson);
+                // Also include the uploaded PDF file itself if it's a stamp
+                if (data.type === 'pdf_stamp' && data.file) {
+                    const pdfPath = folder ? `${folder}/${data.filename}` : data.filename;
+                    zip.file(pdfPath, data.file);
+                }
+            } else {
+                // Single item: download EPD directly
+                let fname = '';
+                if (data.type === 'url' || data.type === 'xls_url') {
+                    try { fname = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e) { fname = 'config'; }
+                } else { fname = data.filename.replace(/\.pdf$/i, ''); }
+                const blob = new Blob([itemJson], { type: 'application/json' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                a.download = `${prefix}${fname}${suffix}.epd`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+            }
+
+            data.status = 'done';
+            if (data.type === 'url' || data.type === 'xls_url') log(`✓ ${data.url} — config exportada.`, 'success');
+            else log(`✓ ${data.filename} — config exportada.`, 'success');
             renderQueue();
         }
+
+        // Generate & download ZIP
+        if (useZip && zip) {
+            log('Generando archivo ZIP...', 'info');
+            processBtn.innerHTML = '<i class="fa-solid fa-file-zipper fa-spin"></i> Generando ZIP...';
+            const zipBlob = await zip.generateAsync({ type: 'blob' }, (meta) => {
+                processBtn.innerHTML = `<i class="fa-solid fa-file-zipper"></i> ZIP ${Math.round(meta.percent)}%`;
+            });
+            _lastZipBlob = zipBlob;
+            const zipName = `EDTech_PDF_${new Date().toISOString().slice(0,10)}.zip`;
+            const a = document.createElement('a'); a.href = URL.createObjectURL(zipBlob); a.download = zipName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            log(`✅ ZIP descargado: ${zipName} (${(zipBlob.size/1024).toFixed(1)} KB)`, 'success');
+            const dlBtn = document.getElementById('downloadZipBtn');
+            if (dlBtn) { dlBtn.style.display = 'flex'; dlBtn.onclick = () => { const a2 = document.createElement('a'); a2.href = URL.createObjectURL(_lastZipBlob); a2.download = zipName; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2); }; }
+        }
+
         processBtn.disabled = false; processBtn.innerHTML = '<span>INICIAR PROCESO</span><i class="fa-solid fa-bolt"></i>';
         const ga = document.getElementById('globalActions'); if (ga) ga.style.display = 'flex';
-        log('Proceso finalizado. Las plantillas están listas para exportar (.epd).', 'success');
+        const gam = document.getElementById('globalActionsMsg');
+        if (gam) gam.textContent = useZip ? `${pendItems.length} archivos descargados como ZIP.` : 'Archivo descargado.';
+        log('Proceso finalizado.', 'success');
     });
 
     // Filename preview
