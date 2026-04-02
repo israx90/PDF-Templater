@@ -6,6 +6,9 @@ on:
     tags:
       - 'v*' # Ejecuta automáticamente si creas un TAG (ej. v1.0.0)
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build on ${{ matrix.os }}
