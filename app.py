@@ -31,19 +31,38 @@ def home():
 @app.route('/select_folder', methods=['POST'])
 def select_folder():
     import subprocess
+    import platform
     try:
-        script = """
-        set p to choose folder with prompt "Selecciona la carpeta de salida"
-        POSIX path of p
-        """
-        result = subprocess.run(['osascript', '-e', script], capture_output=True, text=True)
-        if result.returncode == 0:
-            folder_path = result.stdout.strip()
-            return jsonify({'path': folder_path})
-        else:
-            return jsonify({'path': None})
+        # Detect platform and use native dialog
+        if platform.system() == 'Darwin':
+            script = """
+            set p to choose folder with prompt "Selecciona la carpeta de salida"
+            POSIX path of p
+            """
+            result = subprocess.run(['osascript', '-e', script], capture_output=True, text=True)
+            if result.returncode == 0 and result.stdout.strip():
+                return jsonify({'path': result.stdout.strip()})
+                
+        elif platform.system() == 'Windows':
+            script = """
+            Add-Type -AssemblyName System.windows.forms
+            $f = New-Object System.Windows.Forms.FolderBrowserDialog
+            $f.Description = "Selecciona la carpeta de salida"
+            $f.ShowNewFolderButton = $true
+            # Bring to front hack
+            $f.RootFolder = [System.Environment+SpecialFolder]::MyComputer
+            if ($f.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                Write-Output $f.SelectedPath
+            }
+            """
+            result = subprocess.run(['powershell', '-NoProfile', '-Command', script], capture_output=True, text=True)
+            if result.returncode == 0 and result.stdout.strip():
+                return jsonify({'path': result.stdout.strip()})
+                
+        # Default fallback
+        return jsonify({'path': None})
     except Exception as e:
-        print(f"Error selecting folder: {e}")
+        print(f"Error selecting folder cross-platform: {e}")
         return jsonify({'path': None})
 
 @app.route('/process_url', methods=['POST'])
