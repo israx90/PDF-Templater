@@ -1,0 +1,20 @@
+# === Core Web Framework ===
+flask
+werkzeug
+
+# === Web Scraping & Content Extraction ===
+requests
+beautifulsoup4
+trafilatura
+lxml
+lxml_html_clean
+
+# === PDF Generation (ReportLab) ===
+reportlab
+
+# === Translation ===
+deep-translator
+
+# === Browser Automation (JS-heavy sites fallback) ===
+playwright
+

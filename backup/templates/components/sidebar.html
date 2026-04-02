@@ -1,0 +1,71 @@
+<!-- SHARED SIDEBAR COMPONENT -->
+<aside class="sidebar-left">
+    <!-- Brand -->
+    <div class="brand">
+        <div class="logo-text">
+            <span class="brand-highlight">EDTECH</span>
+            <span class="brand-sub">PDF TEMPLATER</span>
+        </div>
+        <div class="version">v1.5</div>
+    </div>
+
+    <!-- Templates -->
+    <div class="settings-group" style="margin-bottom: 15px;">
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:5px;">Plantillas</label>
+        <div style="display:flex; gap:5px;">
+            <button id="importTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;"
+                title="Cargar Plantilla">
+                <i class="fa-solid fa-file-import"></i> Cargar
+            </button>
+            <button id="exportTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;"
+                title="Guardar Plantilla">
+                <i class="fa-solid fa-file-export"></i> Guardar
+            </button>
+            <input type="file" id="templateInput" accept=".edd,.edx,.epd,.edp,application/json" hidden>
+        </div>
+    </div>
+
+    <!-- Paper Size -->
+    <div class="settings-group" id="paperSizeGroup">
+        <h3><i class="fa-solid fa-print"></i> Formato de Papel</h3>
+        <div class="paper-selector">
+            <label class="paper-card active" data-value="letter">
+                <div class="icon"><i class="fa-regular fa-file"></i></div>
+                <span>CARTA</span>
+                <span class="paper-dims">21.59 × 27.94 cm</span>
+            </label>
+            <label class="paper-card" data-value="a4">
+                <div class="icon"><i class="fa-regular fa-file-lines"></i></div>
+                <span>A4</span>
+                <span class="paper-dims">21.0 × 29.7 cm</span>
+            </label>
+            <label class="paper-card" data-value="legal">
+                <div class="icon"><i class="fa-solid fa-file-contract"></i></div>
+                <span>OFICIO</span>
+                <span class="paper-dims">21.59 × 35.56 cm</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-sliders"></i> Configuración</h3>
+        <label class="toggle-row">
+            <span>Forzar Estilos</span>
+            <input type="checkbox" checked id="forceStyles">
+            <div class="toggle-switch"></div>
+        </label>
+        <label class="toggle-row" id="excelBoldRow" style="display:none; margin-top:10px;">
+            <span>Negrita (Excel)</span>
+            <input type="checkbox" checked id="excelBoldHeaders">
+            <div class="toggle-switch"></div>
+        </label>
+    </div>
+
+    <!-- Format Config Button -->
+    <div class="settings-group">
+        <button id="openConfigBtnSidebar" class="btn-select" style="width:100%; justify-content:center;">
+            <i class="fa-solid fa-paintbrush"></i> Configurar Formato
+        </button>
+    </div>
+</aside>

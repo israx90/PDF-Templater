@@ -1,0 +1,75 @@
+name: Construir App de Escritorio (EXE y DMG)
+
+on:
+  workflow_dispatch: # Permite iniciar la construcción manualmente desde la pestaña "Actions"
+  push:
+    tags:
+      - 'v*' # Ejecuta automáticamente si creas un TAG (ej. v1.0.0)
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-13]
+
+    steps:
+      - name: 📥 Clonar Repositorio
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: ⚙️ Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 📦 Instalar Dependencias Python y PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller playwright
+
+      - name: 🌐 Instalar Navegador para Playwright
+        run: playwright install chromium
+        continue-on-error: true
+
+      - name: 🔨 Compilar Servidor Python (Backend)
+        run: pyinstaller app_server.spec
+
+      - name: 📦 Instalar Dependencias NodeJS (Frontend)
+        run: npm install
+
+      - name: 🚀 Construir App Electron (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🚀 Construir App Electron (Mac)
+        if: matrix.os == 'macos-13'
+        run: npm run build:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📤 Subir Instaladores a los Artefactos (Descarga Temporal)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EDTech-PDF-Tool-${{ matrix.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+
+      - name: 🚀 Publicar en GitHub Releases (Sólo si es un Tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe
+            dist/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,71 @@
+<!-- COLUMN 3: RIGHT SIDEBAR -->
+<aside class="sidebar-right">
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Acciones</h3>
+    </div>
+    <div class="settings-group">
+        <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted);">Carpeta de Salida</label>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <input type="text" id="outputFolderDisplay" readonly placeholder="Descargas del navegador"
+                style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px; background:#f8fafc; color:#64748b; font-size:0.85rem;">
+            <div style="background:#fffbeb; border:1px solid #fbbf24; border-radius:6px; padding:8px 10px; font-size:0.75rem; color:#92400e;">
+                <i class="fa-solid fa-info-circle" style="margin-right:4px;"></i>
+                En la versión web, los archivos se descargan directamente al navegador.
+            </div>
+            <input type="hidden" id="outputFolderValue">
+        </div>
+    </div>
+    <div class="settings-group">
+        <label style="display:block; margin-bottom:10px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-file-signature" style="margin-right:4px;"></i> Nombre del Archivo
+        </label>
+        <div style="display:flex; gap:8px;">
+            <div style="flex:1;">
+                <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Prefijo</label>
+                <input type="text" id="filePrefix" placeholder="Ej: UNIFRANZ_"
+                    style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+            </div>
+            <div style="flex:1;">
+                <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Sufijo</label>
+                <input type="text" id="fileSuffix" placeholder="Ej: _ES"
+                    style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+            </div>
+        </div>
+        <p style="margin-top:6px; font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">
+            Resultado: <span id="fileNamePreview" style="color:var(--text-main);">prefijo_titulo_sufijo.pdf</span>
+        </p>
+    </div>
+    <div class="settings-group" id="pdfStampOptionsGroup" style="display:none;">
+        <label style="display:block; margin-bottom:8px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-file-pdf" style="color:#7c3aed; margin-right:4px;"></i> Opciones PDF Estampado
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-main); cursor:pointer;">
+            <input type="checkbox" id="stampRecolorAccent" style="accent-color:#7c3aed; width:14px; height:14px;">
+            Recolorizar texto de acento al color EPD
+        </label>
+        <p style="margin-top:4px; font-size:10px; color:var(--text-muted); line-height:1.4;">
+            Convierte textos de color (ej. naranja) al color H2 de la plantilla activa. El negro se conserva.
+        </p>
+    </div>
+    <div class="settings-group">
+        <button id="processBtn" class="btn-primary" disabled style="width:100%; justify-content:center; height:50px;">
+            <span>INICIAR PROCESO</span>
+            <i class="fa-solid fa-bolt"></i>
+        </button>
+    </div>
+    <div id="globalActions" style="display:none; flex-direction:column; gap:15px; padding:20px; border-top:1px solid var(--border-color);">
+        <div style="text-align:center;">
+            <h4 style="color:var(--success); margin-bottom:5px;">¡Proceso Finalizado!</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Archivos listos para descarga.</p>
+        </div>
+    </div>
+    <div class="console-panel">
+        <div class="console-header-static">
+            <i class="fa-solid fa-terminal"></i> REGISTRO DEL SISTEMA
+        </div>
+        <div class="console-logs-static" id="consoleLogs">
+            <div class="log-item info">Sistema listo. Versión Web — funciona sin servidor.</div>
+        </div>
+    </div>
+</aside>
+</div><!-- end .app-container -->

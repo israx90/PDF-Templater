@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unifranz Online | Formateador Profesional</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        :root {
+            --primary: #ef4444;
+            --primary-hover: #dc2626;
+            --bg-panel-secondary: #f8f9fa;
+            --border-focus: #ef4444;
+        }
+    </style>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS (client-side XLSX parsing) -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- COLUMN 1: LEFT SIDEBAR (SETTINGS) -->
+        {% include 'components/sidebar_pdf.html' %}
+
+        <!-- COLUMN 2: CENTER WORKSPACE (DROP ZONE & LIST) -->
+        <main class="workspace">
+            <div class="workspace-header">
+                <h2>Espacio de Trabajo</h2>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <!-- Always-visible Add URL button -->
+                    <button id="addUrlToQueueBtn" class="btn-mini"
+                        style="background:var(--primary); color:white; border:none; padding:7px 14px;">
+                        <i class="fa-solid fa-link"></i> Añadir URL
+                    </button>
+                    <!-- XLS Loader button -->
+                    <button id="loadXlsBtn" class="btn-mini"
+                        style="background:#10b981; color:white; border:none; padding:7px 14px;"
+                        title="Carga un archivo XLSX para crear carpetas por materia y añadir URLs con prefijo a la cola">
+                        <i class="fa-solid fa-file-excel"></i> Cargar XLS
+                    </button>
+                    <input type="file" id="xlsInput" accept=".xlsx,.xls" hidden>
+                    <!-- PDF Stamp button -->
+                    <button id="loadPdfBtn" class="btn-mini"
+                        style="background:#7c3aed; color:white; border:none; padding:7px 14px;"
+                        title="Carga PDFs en blanco y aplica el encabezado/pie de la plantilla activa">
+                        <i class="fa-solid fa-file-pdf"></i> Cargar PDFs
+                    </button>
+                    <input type="file" id="pdfStampInput" accept=".pdf" multiple hidden>
+                    <span class="badge">Listo</span>
+
+                </div>
+            </div>
+
+            <!-- Inline URL Input (shown below header when active) -->
+            <div id="urlInlineBar"
+                style="display:none; padding:10px 20px; background:white; border-bottom:1px solid var(--border-color); gap:8px; align-items:center;">
+                <input type="url" id="urlInlineInput" placeholder="https://ejemplo.com/articulo" autocomplete="off"
+                    style="flex:1; padding:9px 14px; border:1.5px solid var(--primary); border-radius:8px;
+                           font-size:0.9rem; color:var(--text-color); background:white;
+                           outline:none; min-width:0;">
+                <button id="urlInlineConfirm" class="btn-mini"
+                    style="background:var(--primary); color:white; border:none; white-space:nowrap;">
+                    <i class="fa-solid fa-check"></i> Añadir a Cola
+                </button>
+                <button id="urlInlineCancel" class="btn-mini btn-outline" style="white-space:nowrap;">
+                    <i class="fa-solid fa-xmark"></i> Cancelar
+                </button>
+            </div>
+            
+
+
+            <div class="workspace-body">
+                <!-- CLIPBOARD ZONE -->
+                <div class="hero-zone" id="clipboardZone">
+                    <div class="hero-content">
+                        <i class="fa-regular fa-file-pdf main-icon"></i>
+                        <h2>Agregar URLs a la cola</h2>
+                        <p>Pega desde el portapapeles o escribe la URL manualmente para convertirlas en PDF</p>
+                        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                            <button id="pasteBtn" class="btn-select">
+                                <i class="fa-solid fa-paste"></i> PEGAR ENLACE
+                            </button>
+                            <button id="addUrlToQueueBtn" class="btn-select"
+                                style="background:transparent; border:2px solid #ef4444; color:#ef4444; border-radius:6px; padding:10px 24px; font-weight:600; font-size:0.95rem; cursor:pointer;"
+                                onmouseover="this.style.background='#fef2f2';" onmouseout="this.style.background='transparent';">
+                                <i class="fa-solid fa-link" style="margin-right:6px;"></i> ESCRIBIR URL
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PRODUCTION QUEUE -->
+                <div class="production-queue" id="productionQueue">
+                    <div class="queue-header-actions">
+                        <span style="font-weight: 600; color: var(--text-muted);">
+                            Enlaces: <span id="queueCount">0</span>
+                        </span>
+                        <div style="display:flex; gap:10px;">
+                            <button id="clearQueueBtn" class="btn-mini btn-outline">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="queue-list" id="queueList">
+                        <!-- Items injected here -->
+                    </div>
+                </div>
+
+                <!-- Info Footer -->
+                <div style="margin-top:20px; color:#94a3b8; font-size:0.9rem; text-align:center;">
+                    <p>Formato Automático: <strong id="footerPaperSize">Carta (Letter)</strong> | Estilos:
+                        <strong>Unifranz</strong>
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <!-- COLUMN 3: RIGHT SIDEBAR (ACTIONS & LOGS) -->
+        <aside class="sidebar-right">
+            <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Acciones</h3>
+            </div>
+
+            <div class="settings-group">
+                <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted);">Carpeta de
+                    Salida</label>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="text" id="outputFolderDisplay" readonly placeholder="/outputs"
+                        style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px; background:#f8fafc; color:#64748b; font-size:0.85rem;">
+                    <button id="selectFolderBtn" class="btn-select" style="justify-content:center; width:100%;">
+                        <i class="fa-regular fa-folder"></i> Seleccionar Carpeta
+                    </button>
+                    <input type="hidden" id="outputFolderValue">
+                </div>
+            </div>
+
+            <!-- Filename Prefix & Suffix -->
+            <div class="settings-group">
+                <label style="display:block; margin-bottom:10px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+                    <i class="fa-solid fa-file-signature" style="margin-right:4px;"></i> Nombre del Archivo
+                </label>
+                <div style="display:flex; gap:8px;">
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Prefijo</label>
+                        <input type="text" id="filePrefix" placeholder="Ej: UNIFRANZ_"
+                            style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:4px; font-size:11px; color:var(--text-muted);">Sufijo</label>
+                        <input type="text" id="fileSuffix" placeholder="Ej: _ES"
+                            style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; color:var(--text-main); background:var(--bg-panel);">
+                    </div>
+                </div>
+                <p style="margin-top:6px; font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">
+                    Resultado: <span id="fileNamePreview" style="color:var(--text-main);">prefijo_titulo_sufijo.pdf</span>
+                </p>
+            </div>
+
+            <!-- PDF Stamp Options -->
+            <div class="settings-group" id="pdfStampOptionsGroup" style="display:none;">
+                <label style="display:block; margin-bottom:8px; font-size:11px; font-weight:700; color:var(--text-main); text-transform:uppercase; letter-spacing:0.5px;">
+                    <i class="fa-solid fa-file-pdf" style="color:#7c3aed; margin-right:4px;"></i> Opciones PDF Estampado
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-main); cursor:pointer;">
+                    <input type="checkbox" id="stampRecolorAccent" style="accent-color:#7c3aed; width:14px; height:14px;">
+                    Recolorizar texto de acento al color EPD
+                </label>
+                <p style="margin-top:4px; font-size:10px; color:var(--text-muted); line-height:1.4;">
+                    Convierte textos de color (ej. naranja) al color H2 de la plantilla activa. El negro se conserva.
+                </p>
+            </div>
+
+            <div class="settings-group">
+                <button id="processBtn" class="btn-primary" disabled
+                    style="width:100%; justify-content:center; height:50px;">
+                    <span>INICIAR PROCESO</span>
+                    <i class="fa-solid fa-bolt"></i>
+                </button>
+            </div>
+
+
+            <!-- Global Actions (Download All) -->
+            <div id="globalActions"
+                style="display:none; flex-direction:column; gap:15px; padding:20px; border-top:1px solid var(--border-color);">
+                <div style="text-align:center;">
+                    <h4 style="color:var(--success); margin-bottom:5px;">¡Proceso Finalizado!</h4>
+                    <p style="font-size:12px; color:var(--text-muted);">Archivos guardados correctamente.</p>
+                </div>
+                <a href="/download_batch" class="btn-primary" style="justify-content:center; background:#475569;">
+                    <i class="fa-solid fa-file-zipper"></i> Descargar Todo (.ZIP)
+                </a>
+            </div>
+
+            <!-- CONSOLE LOGS (Always visible at bottom right) -->
+            <div class="console-panel">
+                <div class="console-header-static">
+                    <i class="fa-solid fa-terminal"></i> REGISTRO DEL SISTEMA
+                </div>
+                <div class="console-logs-static" id="consoleLogs">
+                    <div class="log-item info">Sistema listo. Esperando archivos...</div>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- ADVANCED CONFIG MODAL -->
+    {% include 'components/config_modal_pdf.html' %}
+
+    <script src="/static/js/edtech_config.js"></script>
+    <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>

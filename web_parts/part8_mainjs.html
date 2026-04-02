@@ -1,0 +1,362 @@
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const consoleLogs = document.getElementById('consoleLogs');
+    const productionQueue = document.getElementById('productionQueue');
+    const queueList = document.getElementById('queueList');
+    const queueCount = document.getElementById('queueCount');
+    const clearQueueBtn = document.getElementById('clearQueueBtn');
+    const processBtn = document.getElementById('processBtn');
+    const clipboardZone = document.getElementById('clipboardZone');
+    let selectedFiles = new Map();
+    let paperSize = 'letter';
+
+    function log(msg, type = 'info') {
+        if (!consoleLogs) return;
+        const div = document.createElement('div'); div.className = `log-item ${type}`;
+        div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        consoleLogs.appendChild(div); consoleLogs.scrollTop = consoleLogs.scrollHeight;
+    }
+
+    // Config Modal
+    const configModal = document.getElementById('configModal');
+    const sidebarConfigBtn = document.getElementById('openConfigBtnSidebar');
+    const closeConfigBtn = document.getElementById('closeConfigBtn');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    if (sidebarConfigBtn && configModal) sidebarConfigBtn.addEventListener('click', () => configModal.classList.add('active'));
+    if (closeConfigBtn && configModal) { closeConfigBtn.addEventListener('click', () => configModal.classList.remove('active')); configModal.addEventListener('click', (e) => { if (e.target === configModal) configModal.classList.remove('active'); }); }
+    if (saveConfigBtn && configModal) saveConfigBtn.addEventListener('click', () => { configModal.classList.remove('active'); log('Configuración aplicada.', 'success'); });
+
+    // Template Import/Export
+    const importTemplateBtn = document.getElementById('importTemplateBtn');
+    const exportTemplateBtn = document.getElementById('exportTemplateBtn');
+    const templateInput = document.getElementById('templateInput');
+    if (exportTemplateBtn) exportTemplateBtn.addEventListener('click', () => { try { EDTechConfig.save(); log('Configuración guardada como .epd', 'success'); } catch (e) { log('Error: ' + e.message, 'error'); } });
+    if (importTemplateBtn && templateInput) {
+        importTemplateBtn.addEventListener('click', () => templateInput.click());
+        templateInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            try { importTemplateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando...';
+                const meta = await EDTechConfig.load(file);
+                if (meta) log(`Plantilla cargada: ${meta.tool} (${meta.created?.slice(0, 10)})`, 'success');
+            } catch (err) { log('Error: ' + err.message, 'error'); }
+            finally { importTemplateBtn.innerHTML = '<i class="fa-solid fa-file-arrow-up"></i> Cargar'; templateInput.value = ''; }
+        });
+    }
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const parent = btn.parentElement; parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+            const modalBody = btn.closest('.config-window').querySelector('.config-body');
+            modalBody.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden-tab'));
+            const t = document.getElementById(btn.getAttribute('data-tab')); if (t) t.classList.remove('hidden-tab');
+        });
+    });
+
+    // Image uploads
+    setTimeout(() => {
+        edtechRegisterImgUpload('caratula', 'caratulaImgDropZone', 'caratulaImgInput', 'caratulaImgPreview');
+        edtechRegisterImgUpload('contratapa', 'contratapaImgDropZone', 'contratapaImgInput', 'contratapaImgPreview');
+        edtechRegisterImgUpload('header', 'headerDropZone', 'headerInput', 'headerPreview');
+        // Author toggle
+        const at = document.getElementById('caratulaIncluirAutor'), af = document.getElementById('caratulaAutorField');
+        if (at && af) at.addEventListener('change', () => { af.style.display = at.checked ? 'block' : 'none'; });
+        // Header type toggle
+        const cht = document.getElementById('cfgHeaderType'), chg = document.getElementById('customHeaderGroup');
+        if (cht && chg) cht.addEventListener('change', () => { chg.style.display = cht.value === 'custom' ? 'block' : 'none'; });
+
+        // Carátula drag editor
+        (function() {
+            const container = document.getElementById('caratulaPreviewContainer'); if (!container) return;
+            const labels = container.querySelectorAll('.caratula-drag-label');
+            let active = null, sx, sy, sl, st;
+            labels.forEach(l => {
+                l.addEventListener('mouseenter', () => l.style.borderColor = '#3b82f6');
+                l.addEventListener('mouseleave', () => { if (active !== l) l.style.borderColor = 'transparent'; });
+                l.addEventListener('mousedown', (e) => { e.preventDefault(); active = l; l.style.cursor = 'grabbing'; l.style.borderColor = '#3b82f6';
+                    sx = e.clientX; sy = e.clientY; sl = parseFloat(l.style.left) || 50; st = parseFloat(l.style.top) || 50; });
+            });
+            document.addEventListener('mousemove', (e) => { if (!active) return;
+                const r = container.getBoundingClientRect();
+                const nx = Math.max(5, Math.min(95, sl + ((e.clientX - sx) / r.width) * 100));
+                const ny = Math.max(5, Math.min(95, st + ((e.clientY - sy) / r.height) * 100));
+                active.style.left = nx + '%'; active.style.top = ny + '%';
+                if (active.id === 'caratulaDragTitle') { const ix = document.getElementById('cfgCaratulaTitleX'), iy = document.getElementById('cfgCaratulaTitleY');
+                    if (ix) ix.value = Math.round(nx); if (iy) iy.value = Math.round(ny); }
+            });
+            document.addEventListener('mouseup', () => { if (active) { active.style.cursor = 'grab'; active.style.borderColor = 'transparent'; active = null; } });
+            // Live text preview
+            const fm = { caratulaTitulo: { el: 'caratulaDragTitle', fb: 'TÍTULO DEL DOCUMENTO', u: true }, caraTulaAutor: { el: 'caratulaDragAutor', fb: 'Autor (opcional)', u: false },
+                caraTulaInstitucion: { el: 'caratulaDragInstitucion', fb: 'INSTITUCIÓN', u: true }, caraTulaFecha: { el: 'caratulaDragFecha', fb: 'Fecha', u: false } };
+            Object.entries(fm).forEach(([iid, cfg]) => { const i = document.getElementById(iid); if (i) i.addEventListener('input', () => { const d = document.getElementById(cfg.el); if (d) { const t = i.value || cfg.fb; d.textContent = cfg.u ? t.toUpperCase() : t; } }); });
+            function syncBg() { const bg = document.getElementById('caratulaPreviewBg'); if (!bg) return; const s = window._edtechImgStore?.caratula; bg.style.backgroundImage = s?.dataUrl ? `url(${s.dataUrl})` : ''; }
+            setInterval(syncBg, 1000); syncBg();
+        })();
+    }, 100);
+
+    // URL Classification
+    function classifyUrl(url) {
+        try { const u = new URL(url), h = u.hostname.replace('www.','').toLowerCase();
+            const login = ['facebook.com','fb.com','linkedin.com','instagram.com','twitter.com','x.com','tiktok.com','pinterest.com'];
+            if (login.some(d => h === d || h.endsWith('.'+d))) return { risk:'high', label:'⚠ Login requerido', color:'#dc2626', bg:'#fee2e2', tip:'Red social con login.' };
+            const paywall = ['wsj.com','ft.com','hbr.org','economist.com','nytimes.com','bloomberg.com','medium.com'];
+            if (paywall.some(d => h.includes(d))) return { risk:'high', label:'🔒 Paywall', color:'#dc2626', bg:'#fee2e2', tip:'Posible paywall.' };
+            const academic = ['scielo.org','redalyc.org','researchgate.net','academia.edu','dialnet.unirioja.es'];
+            if (academic.some(d => h.includes(d))) return { risk:'medium', label:'📄 Académico', color:'#7c3aed', bg:'#ede9fe', tip:'Artículo académico.' };
+            return { risk:'ok', label:'', color:'', bg:'', tip:'' };
+        } catch(e) { return { risk:'high', label:'❌ URL inválida', color:'#dc2626', bg:'#fee2e2', tip:'URL inválida.' }; }
+    }
+
+    function handleUrl(url) {
+        if (!selectedFiles.has(url)) { selectedFiles.set(url, { type: 'url', url, status: 'pend', resultPdf: null }); renderQueue(); log(`URL añadida: ${url}`, 'success'); }
+        else log('La URL ya está en la cola.', 'info');
+    }
+
+    function renderQueue() {
+        if (selectedFiles.size > 0) { if (clipboardZone) clipboardZone.style.display = 'none'; productionQueue.classList.add('visible'); productionQueue.style.display = 'flex'; processBtn.disabled = false; }
+        else { productionQueue.classList.remove('visible'); productionQueue.style.display = 'none'; if (clipboardZone) clipboardZone.style.display = 'flex'; processBtn.disabled = true; }
+        const hasPdfStamp = [...selectedFiles.values()].some(d => d.type === 'pdf_stamp');
+        const sog = document.getElementById('pdfStampOptionsGroup'); if (sog) sog.style.display = hasPdfStamp ? 'block' : 'none';
+        queueCount.innerText = selectedFiles.size; queueList.innerHTML = '';
+        selectedFiles.forEach((data, name) => {
+            let infoHtml = '', iconClass = 'fa-file', iconColor = '';
+            if (data.type === 'url' || data.type === 'xls_url') {
+                iconClass = 'fa-globe'; const r = classifyUrl(data.url);
+                iconColor = data.type === 'xls_url' ? '#10b981' : (r.risk === 'high' ? '#dc2626' : r.risk === 'medium' ? '#d97706' : 'var(--primary)');
+                const rb = r.label ? `<span title="${r.tip}" style="font-size:0.68rem;background:${r.bg};color:${r.color};border-radius:4px;padding:1px 6px;font-weight:600;cursor:help;">${r.label}</span>` : '';
+                const folderBadge = data.type === 'xls_url' ? `<span style="font-size:0.7rem;background:#d1fae5;color:#065f46;border-radius:4px;padding:1px 6px;font-weight:600;"><i class="fa-solid fa-folder" style="margin-right:3px;"></i>${data.xlsFolder}</span><span style="font-size:0.7rem;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 6px;font-weight:600;">${data.xlsPrefix}</span>` : '';
+                infoHtml = `<div class="q-info" style="display:flex;align-items:center;gap:15px;flex:1;"><div style="width:40px;height:40px;background:var(--bg-app);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid ${iconClass}" style="color:${iconColor};font-size:1.2rem;"></i></div><div style="display:flex;flex-direction:column;min-width:0;"><span class="q-name" style="font-weight:500;word-break:break-all;font-size:0.9rem;">${data.url}</span><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap;align-items:center;"><span style="font-size:0.75rem;color:var(--text-muted);">Sitio Web</span>${folderBadge}${rb}</div></div></div>`;
+            } else {
+                const sizeMB = data.file ? (data.file.size / 1024 / 1024).toFixed(2) : '0';
+                const isPdfStamp = data.type === 'pdf_stamp'; iconClass = isPdfStamp ? 'fa-file-pdf' : 'fa-file'; iconColor = isPdfStamp ? '#7c3aed' : '#3b82f6';
+                const sb = isPdfStamp ? `<span style="font-size:0.68rem;background:#ede9fe;color:#7c3aed;border-radius:4px;padding:1px 6px;font-weight:600;">✦ Estampar</span>` : '';
+                infoHtml = `<div class="q-info" style="display:flex;align-items:center;gap:15px;flex:1;"><div style="width:40px;height:40px;background:var(--bg-app);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid ${iconClass}" style="color:${iconColor};font-size:1.2rem;"></i></div><div style="display:flex;flex-direction:column;gap:2px;"><span class="q-name" style="font-weight:500;font-size:0.9rem;">${isPdfStamp ? data.filename : name}</span><div style="display:flex;gap:5px;align-items:center;"><span class="q-size" style="font-size:0.75rem;color:var(--text-muted);">${sizeMB} MB</span>${sb}</div></div></div>`;
+            }
+            let statusBadge = '<div class="q-status">Pendiente</div>';
+            if (data.status === 'processing') statusBadge = `<div class="q-status processing"><span>Procesando... ${data.progress||0}%</span><div style="width:100%;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden;"><div style="height:100%;width:${data.progress||0}%;background:var(--primary);border-radius:2px;transition:width 0.4s;"></div></div></div>`;
+            if (data.status === 'done') statusBadge = '<div class="q-status done">Completado</div>';
+            if (data.status === 'error') statusBadge = '<div class="q-status" style="background:#fee2e2;color:#b91c1c;">Error</div>';
+            let actions = data.status === 'done' ? `<div class="btn-mini" style="background:#10b981;"><i class="fa-solid fa-check"></i> OK</div>` : `<div class="btn-mini disabled"><i class="fa-solid fa-clock"></i> Esperando</div>`;
+            const div = document.createElement('div'); div.className = 'queue-item'; div.style.flexWrap = 'wrap';
+            div.innerHTML = `${infoHtml}${statusBadge}<div class="q-actions">${actions}</div>`;
+            queueList.appendChild(div);
+        });
+    }
+
+    // Queue actions
+    if (clearQueueBtn) clearQueueBtn.addEventListener('click', () => { selectedFiles.clear(); renderQueue(); const ga = document.getElementById('globalActions'); if (ga) ga.style.display = 'none'; log('Cola vaciada.', 'info'); });
+
+    // Paste button
+    const pasteBtn = document.getElementById('pasteBtn');
+    if (pasteBtn) pasteBtn.addEventListener('click', async () => {
+        try { const t = await navigator.clipboard.readText(); if (t && t.startsWith('http')) handleUrl(t.trim()); else log('No se detectó URL válida en el portapapeles.', 'error'); }
+        catch (e) { log('Permiso de portapapeles denegado.', 'error'); }
+    });
+
+    // Write URL button (hero)
+    const writeUrlBtn = document.getElementById('writeUrlBtn');
+    if (writeUrlBtn) writeUrlBtn.addEventListener('click', showUrlInput);
+
+    // URL inline bar
+    const addUrlBtn = document.getElementById('addUrlToQueueBtn');
+    const urlInlineInput = document.getElementById('urlInlineInput');
+    const urlInlineConfirm = document.getElementById('urlInlineConfirm');
+    const urlInlineCancel = document.getElementById('urlInlineCancel');
+    const urlInlineBar = document.getElementById('urlInlineBar');
+    function showUrlInput() { if (urlInlineBar) urlInlineBar.style.display = 'flex'; if (urlInlineInput) { urlInlineInput.value = ''; urlInlineInput.focus(); } }
+    function hideUrlInput() { if (urlInlineBar) urlInlineBar.style.display = 'none'; }
+    function submitUrlInput() {
+        const val = urlInlineInput ? urlInlineInput.value.trim() : ''; if (!val) { hideUrlInput(); return; }
+        if (!val.startsWith('http')) { log('URL no válida. Debe comenzar con http/https.', 'error'); return; }
+        if (selectedFiles.has(val)) { log('URL ya en la cola.', 'info'); hideUrlInput(); return; }
+        selectedFiles.set(val, { type: 'url', url: val, status: 'pend', resultPdf: null }); renderQueue(); log(`Enlace añadido: ${val}`, 'info'); hideUrlInput();
+    }
+    if (addUrlBtn) addUrlBtn.addEventListener('click', showUrlInput);
+    if (urlInlineConfirm) urlInlineConfirm.addEventListener('click', submitUrlInput);
+    if (urlInlineCancel) urlInlineCancel.addEventListener('click', hideUrlInput);
+    if (urlInlineInput) { urlInlineInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitUrlInput(); if (e.key === 'Escape') hideUrlInput(); });
+        urlInlineInput.addEventListener('focus', async () => { try { const c = await navigator.clipboard.readText(); if (c && c.startsWith('http') && !urlInlineInput.value) urlInlineInput.value = c.trim(); } catch(_){} });
+    }
+
+    // Paper selector
+    document.querySelectorAll('.paper-card').forEach(card => {
+        card.addEventListener('click', () => { document.querySelectorAll('.paper-card').forEach(c => c.classList.remove('active')); card.classList.add('active');
+            paperSize = card.getAttribute('data-value'); const fd = document.getElementById('footerPaperSize');
+            if (fd) fd.innerText = paperSize === 'letter' ? 'Carta (Letter)' : 'Oficio (Legal)'; log(`Papel: ${paperSize}`, 'info'); });
+    });
+
+    // Color picker sync
+    [['cfgLinkColor','cfgLinkColorHex'],['cfgH1Color','cfgH1ColorHex'],['cfgH2Color','cfgH2ColorHex'],['cfgTableHeaderBg','cfgTableHeaderBgHex'],['cfgTableHeaderText','cfgTableHeaderTextHex'],['cfgTableBorderColor','cfgTableBorderColorHex'],['cfgApaBg','cfgApaBgHex'],['cfgApaBorder','cfgApaBorderHex'],['cfgApaTextColor','cfgApaTextColorHex'],['cfgTableRowEven','cfgTableRowEvenHex'],['cfgTableRowOdd','cfgTableRowOddHex'],['cfgCaratulaTitleColor','cfgCaratulaTitleColorHex'],['cfgCaratulaAutorColor','cfgCaratulaAutorColorHex']].forEach(([p,h]) => {
+        const pe = document.getElementById(p), he = document.getElementById(h); if (!pe || !he) return;
+        pe.addEventListener('input', () => { he.value = pe.value.toUpperCase(); updateTablePreview(); });
+        he.addEventListener('input', () => { if (/^#[0-9A-Fa-f]{6}$/.test(he.value)) { pe.value = he.value; updateTablePreview(); } });
+    });
+
+    // Table preview
+    function updateTablePreview() {
+        const hBg = document.getElementById('cfgTableHeaderBg'), hTx = document.getElementById('cfgTableHeaderText');
+        const rEv = document.getElementById('cfgTableRowEven'), rOd = document.getElementById('cfgTableRowOdd');
+        const bC = document.getElementById('cfgTableBorderColor'), bW = document.getElementById('cfgTableBorderWidth');
+        const fS = document.getElementById('cfgTableFontSize'), pad = document.getElementById('cfgTablePadding');
+        if (!hBg) return;
+        const hR = document.getElementById('previewHeaderRow'), r1 = document.getElementById('previewRow1'), r2 = document.getElementById('previewRow2'), tbl = document.getElementById('tablePreviewPdf');
+        if (!hR || !r1 || !r2 || !tbl) return;
+        const bdr = `${bW.value}px solid ${bC.value}`, fs = fS.value + 'px', pd = pad.value + 'px';
+        hR.style.background = hBg.value; hR.style.color = hTx.value; hR.style.fontSize = fs;
+        Array.from(hR.cells).forEach(c => { c.style.padding = pd; c.style.borderBottom = bdr; });
+        r1.style.background = rOd.value; r1.style.fontSize = fs; Array.from(r1.cells).forEach(c => { c.style.padding = pd; });
+        r2.style.background = rEv.value; r2.style.fontSize = fs; Array.from(r2.cells).forEach(c => { c.style.padding = pd; });
+        tbl.style.border = bdr;
+    }
+    ['cfgTableHeaderBg','cfgTableHeaderText','cfgTableRowEven','cfgTableRowOdd','cfgTableBorderColor','cfgTableBorderWidth','cfgTableFontSize','cfgTablePadding'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateTablePreview); });
+    updateTablePreview();
+
+    // XLS Loader
+    const loadXlsBtn = document.getElementById('loadXlsBtn'), xlsInput = document.getElementById('xlsInput');
+    if (loadXlsBtn && xlsInput) {
+        loadXlsBtn.addEventListener('click', () => xlsInput.click());
+        xlsInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            if (typeof XLSX === 'undefined') { log('SheetJS no disponible.', 'error'); return; }
+            log(`Leyendo XLS: ${file.name}...`, 'info'); loadXlsBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Leyendo...'; loadXlsBtn.disabled = true;
+            try {
+                const ab = await file.arrayBuffer(); const wb = XLSX.read(ab, {type:'array'}); const sh = wb.Sheets[wb.SheetNames[0]];
+                let added = 0, skipped = 0; const fm = {};
+                for (let r = 0; r <= 53; r++) { const c = sh[XLSX.utils.encode_cell({r,c:0})]; if (c?.v) fm[r] = String(c.v).trim(); }
+                for (let r = 1; r <= 54; r++) {
+                    const cC = sh[XLSX.utils.encode_cell({r,c:2})], cD = sh[XLSX.utils.encode_cell({r,c:3})];
+                    const prefix = cC?.v ? String(cC.v).trim() : null, url = cD?.v ? String(cD.v).trim() : null;
+                    if (!url || !url.startsWith('http')) { skipped++; continue; }
+                    let folder = fm[r] || null; if (!folder) { for (let b = r-1; b >= 0; b--) { if (fm[b]) { folder = fm[b]; break; } } }
+                    const sf = folder ? folder.replace(/\s+/g,'_') : 'SIN_CARPETA', sp = prefix ? prefix.replace(/\s+/g,'_') : '';
+                    const key = `xls::${sf}::${sp}::${url}`; if (selectedFiles.has(key)) { skipped++; continue; }
+                    selectedFiles.set(key, { type:'xls_url', url, xlsFolder: sf, xlsPrefix: sp, status:'pend', resultPdf: null }); added++;
+                }
+                renderQueue(); if (added > 0) log(`XLS: ${added} URLs añadidas (${skipped} omitidas).`, 'success'); else log(`XLS: sin URLs válidas (${skipped} omitidas).`, 'error');
+            } catch (err) { log('Error XLS: ' + err.message, 'error'); }
+            finally { loadXlsBtn.innerHTML = '<i class="fa-solid fa-file-excel"></i> Cargar XLS'; loadXlsBtn.disabled = false; xlsInput.value = ''; }
+        });
+    }
+
+    // PDF Stamp Loader
+    const loadPdfBtn = document.getElementById('loadPdfBtn'), pdfStampInput = document.getElementById('pdfStampInput');
+    if (loadPdfBtn && pdfStampInput) {
+        loadPdfBtn.addEventListener('click', () => pdfStampInput.click());
+        pdfStampInput.addEventListener('change', (e) => {
+            const files = e.target.files; if (!files || !files.length) return; let added = 0;
+            Array.from(files).forEach(f => { if (!f.name.toLowerCase().endsWith('.pdf')) { log(`Ignorado: ${f.name}`, 'error'); return; }
+                const key = 'PDF_STAMP::' + f.name; if (!selectedFiles.has(key)) { selectedFiles.set(key, { type:'pdf_stamp', file: f, filename: f.name, status:'pend', resultPath: null }); added++; }
+            });
+            if (added > 0) { renderQueue(); log(`${added} PDF(s) añadidos para estampar.`, 'success'); } pdfStampInput.value = '';
+        });
+    }
+
+    // Process button — generates EPD config per item, bundles as ZIP if multiple
+    let _lastZipBlob = null;
+    if (processBtn) processBtn.addEventListener('click', async () => {
+        if (selectedFiles.size === 0) return;
+        processBtn.disabled = true; processBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
+        log('Iniciando proceso...', 'info');
+        const items = [...selectedFiles.entries()];
+        const pendItems = items.filter(([,d]) => d.status !== 'done');
+        const useZip = pendItems.length > 1;
+        let zip = useZip ? new JSZip() : null;
+        const configPayload = { _meta: { version: '2.0', tool: 'EDTech PDF', tool_key: 'pdf', created: new Date().toISOString(), app: 'EDTech Suite v3.5 Web' }, config: EDTechConfig.collectConfig(), images: EDTechConfig.collectImages() };
+        const configJson = JSON.stringify(configPayload, null, 2);
+        const prefix = document.getElementById('filePrefix')?.value || '';
+        const suffix = document.getElementById('fileSuffix')?.value || '';
+
+        for (let i = 0; i < items.length; i++) {
+            const [key, data] = items[i];
+            if (data.status === 'done') continue;
+            data.status = 'processing'; data.progress = 0; renderQueue();
+            for (let p = 0; p <= 100; p += 25) { data.progress = p; renderQueue(); await new Promise(r => setTimeout(r, 150)); }
+
+            // Build per-item EPD with URL/filename baked in
+            const itemConfig = JSON.parse(configJson);
+            if (data.type === 'url' || data.type === 'xls_url') {
+                itemConfig.config.source_url = data.url;
+                itemConfig.config.source_type = data.type;
+                if (data.xlsFolder) itemConfig.config.xls_folder = data.xlsFolder;
+                if (data.xlsPrefix) itemConfig.config.xls_prefix = data.xlsPrefix;
+            } else if (data.type === 'pdf_stamp') {
+                itemConfig.config.source_file = data.filename;
+                itemConfig.config.source_type = 'pdf_stamp';
+            }
+            itemConfig.config.file_prefix = prefix;
+            itemConfig.config.file_suffix = suffix;
+            
+            // Note: In Web mode, we extract paper size from the UI (it might be missing in globals sometimes, so default to letter)
+            const globalPaperSizeSel = document.querySelector('input[name="paperSize"]:checked');
+            itemConfig.config.paper_size = globalPaperSizeSel ? globalPaperSizeSel.value : 'letter';
+            const itemJson = JSON.stringify(itemConfig, null, 2);
+
+            if (useZip) {
+                // Determine filename for this item inside the ZIP
+                let safeName = '';
+                if (data.type === 'url' || data.type === 'xls_url') {
+                    try { safeName = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e) { safeName = 'url_' + i; }
+                    if (data.xlsPrefix) safeName = data.xlsPrefix + '_' + safeName;
+                } else {
+                    safeName = data.filename.replace(/\.pdf$/i, '');
+                }
+                const folder = data.xlsFolder || '';
+                const path = folder ? `${folder}/${prefix}${safeName}${suffix}.epd` : `${prefix}${safeName}${suffix}.epd`;
+                zip.file(path, itemJson);
+                // Also include the uploaded PDF file itself if it's a stamp
+                if (data.type === 'pdf_stamp' && data.file) {
+                    const pdfPath = folder ? `${folder}/${data.filename}` : data.filename;
+                    zip.file(pdfPath, data.file);
+                }
+            } else {
+                // Single item: download EPD directly
+                let fname = '';
+                if (data.type === 'url' || data.type === 'xls_url') {
+                    try { fname = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e) { fname = 'config'; }
+                } else { fname = data.filename.replace(/\.pdf$/i, ''); }
+                const blob = new Blob([itemJson], { type: 'application/json' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                a.download = `${prefix}${fname}${suffix}.epd`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+            }
+
+            data.status = 'done';
+            if (data.type === 'url' || data.type === 'xls_url') log(`✓ ${data.url} — pre-configurada.`, 'success');
+            else log(`✓ ${data.filename} — pre-configurada.`, 'success');
+            renderQueue();
+        }
+
+        // Generate & download ZIP
+        if (useZip && zip) {
+            log('Generando archivo ZIP de plantillas (.epd)...', 'info');
+            processBtn.innerHTML = '<i class="fa-solid fa-file-zipper fa-spin"></i> Generando ZIP...';
+            const zipBlob = await zip.generateAsync({ type: 'blob' }, (meta) => {
+                processBtn.innerHTML = `<i class="fa-solid fa-file-zipper"></i> ZIP ${Math.round(meta.percent)}%`;
+            });
+            _lastZipBlob = zipBlob;
+            const zipName = `EDTech_PDF_${new Date().toISOString().slice(0,10)}.zip`;
+            const a = document.createElement('a'); a.href = URL.createObjectURL(zipBlob); a.download = zipName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            log(`✅ ZIP descargado: ${zipName} (${(zipBlob.size/1024).toFixed(1)} KB)`, 'success');
+            const dlBtn = document.getElementById('downloadZipBtn');
+            if (dlBtn) { dlBtn.style.display = 'flex'; dlBtn.onclick = () => { const a2 = document.createElement('a'); a2.href = URL.createObjectURL(_lastZipBlob); a2.download = zipName; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2); }; }
+        }
+
+        processBtn.disabled = false; processBtn.innerHTML = '<span>INICIAR PROCESO</span><i class="fa-solid fa-bolt"></i>';
+        const ga = document.getElementById('globalActions'); if (ga) ga.style.display = 'flex';
+        const gam = document.getElementById('globalActionsMsg');
+        if (gam) gam.textContent = useZip ? `${pendItems.length} archivos descargados como ZIP.` : 'Archivo descargado.';
+        log('Importante: Usa el archivo .epd descargado en la App de Escritorio para generar el PDF final.', 'success');
+    });
+
+    // Filename preview
+    const fp = document.getElementById('filePrefix'), fs = document.getElementById('fileSuffix'), fnp = document.getElementById('fileNamePreview');
+    function updateFilePreview() { if (fnp) fnp.textContent = `${fp?.value||''}titulo${fs?.value||''}.pdf`; }
+    if (fp) fp.addEventListener('input', updateFilePreview);
+    if (fs) fs.addEventListener('input', updateFilePreview);
+
+    log('Sistema Web iniciado correctamente.', 'success');
+});
+</script>
+</body>
+</html>

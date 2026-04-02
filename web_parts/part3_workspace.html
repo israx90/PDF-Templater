@@ -1,0 +1,65 @@
+<!-- COLUMN 2: CENTER WORKSPACE -->
+<main class="workspace">
+    <div class="workspace-header">
+        <h2>Espacio de Trabajo</h2>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button id="addUrlToQueueBtn" class="btn-mini" style="background:var(--primary); color:white; border:none; padding:7px 14px;">
+                <i class="fa-solid fa-link"></i> Añadir URL
+            </button>
+            <button id="loadXlsBtn" class="btn-mini" style="background:#10b981; color:white; border:none; padding:7px 14px;" title="Carga un archivo XLSX para crear carpetas por materia y añadir URLs con prefijo a la cola">
+                <i class="fa-solid fa-file-excel"></i> Cargar XLS
+            </button>
+            <input type="file" id="xlsInput" accept=".xlsx,.xls" hidden>
+            <button id="loadPdfBtn" class="btn-mini" style="background:#7c3aed; color:white; border:none; padding:7px 14px;" title="Carga PDFs en blanco y aplica el encabezado/pie de la plantilla activa">
+                <i class="fa-solid fa-file-pdf"></i> Cargar PDFs
+            </button>
+            <input type="file" id="pdfStampInput" accept=".pdf" multiple hidden>
+            <span class="badge">Listo</span>
+        </div>
+    </div>
+    <div id="urlInlineBar" style="display:none; padding:10px 20px; background:white; border-bottom:1px solid var(--border-color); gap:8px; align-items:center;">
+        <input type="url" id="urlInlineInput" placeholder="https://ejemplo.com/articulo" autocomplete="off"
+            style="flex:1; padding:9px 14px; border:1.5px solid var(--primary); border-radius:8px; font-size:0.9rem; color:var(--text-color); background:white; outline:none; min-width:0;">
+        <button id="urlInlineConfirm" class="btn-mini" style="background:var(--primary); color:white; border:none; white-space:nowrap;">
+            <i class="fa-solid fa-check"></i> Añadir a Cola
+        </button>
+        <button id="urlInlineCancel" class="btn-mini btn-outline" style="white-space:nowrap;">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+        </button>
+    </div>
+    <div class="workspace-body">
+        <div class="hero-zone" id="clipboardZone">
+            <div class="hero-content">
+                <i class="fa-regular fa-file-pdf main-icon"></i>
+                <h2>Agregar URLs a la cola</h2>
+                <p>Pega desde el portapapeles o escribe la URL manualmente para convertirlas en PDF</p>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                    <button id="pasteBtn" class="btn-select">
+                        <i class="fa-solid fa-paste"></i> PEGAR ENLACE
+                    </button>
+                    <button id="writeUrlBtn" class="btn-select"
+                        style="background:transparent; border:2px solid #ef4444; color:#ef4444; border-radius:6px; padding:10px 24px; font-weight:600; font-size:0.95rem; cursor:pointer;"
+                        onmouseover="this.style.background='#fef2f2';" onmouseout="this.style.background='transparent';">
+                        <i class="fa-solid fa-link" style="margin-right:6px;"></i> ESCRIBIR URL
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="production-queue" id="productionQueue">
+            <div class="queue-header-actions">
+                <span style="font-weight: 600; color: var(--text-muted);">
+                    Enlaces: <span id="queueCount">0</span>
+                </span>
+                <div style="display:flex; gap:10px;">
+                    <button id="clearQueueBtn" class="btn-mini btn-outline">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="queue-list" id="queueList"></div>
+        </div>
+        <div style="margin-top:20px; color:#94a3b8; font-size:0.9rem; text-align:center;">
+            <p>Formato Automático: <strong id="footerPaperSize">Carta (Letter)</strong> | Estilos: <strong>Unifranz</strong></p>
+        </div>
+    </div>
+</main>

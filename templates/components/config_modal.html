@@ -1,0 +1,485 @@
+<!-- ADVANCED CONFIG MODAL -->
+<div id="configModal" class="config-modal-overlay">
+    <div class="config-window">
+        <div class="config-header">
+            <span class="config-title"><i class="fa-solid fa-sliders"></i> Configuración Avanzada</span>
+            <button id="closeConfigBtn" class="btn-close-config"><i class="fa-solid fa-times"></i></button>
+        </div>
+
+        <!-- TABS -->
+        <div class="config-tabs">
+            <button class="tab-btn active" data-tab="tab-general">General</button>
+            <button class="tab-btn" data-tab="tab-headings">Títulos</button>
+            <button class="tab-btn" data-tab="tab-tables">Tablas</button>
+            <button class="tab-btn tab-btn-divider" data-tab="tab-caratula">
+                <i class="fa-solid fa-file-circle-plus"></i> Carátula
+            </button>
+            <button class="tab-btn" data-tab="tab-encabezado">
+                <i class="fa-regular fa-image"></i> Encabezado
+            </button>
+            <button class="tab-btn" data-tab="tab-footer">
+                <i class="fa-solid fa-grip-lines"></i> Footer
+            </button>
+            <button class="tab-btn" data-tab="tab-hojafinal">
+                <i class="fa-solid fa-file-circle-check"></i> Hoja Final
+            </button>
+        </div>
+
+        <div class="config-body">
+
+            <!-- TAB: GENERAL -->
+            <div id="tab-general" class="tab-content">
+                <div class="input-group">
+                    <label>Tipografía Principal</label>
+                    <select id="cfgFont">
+                        <option value="Calibri">Calibri (Estándar)</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Roboto">Roboto</option>
+                        <option value="Helvetica">Helvetica</option>
+                    </select>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Base (Párrafos)</label>
+                        <input type="number" id="cfgFontSize" value="11">
+                    </div>
+                    <div class="input-group">
+                        <label>Color de Enlaces</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgLinkColor" value="#0563C1">
+                            <input type="text" id="cfgLinkColorHex" value="#0563C1" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Espaciado de Línea</label>
+                    <select id="cfgLineSpacing">
+                        <option value="1.0">Sencillo (1.0)</option>
+                        <option value="1.15" selected>1.15</option>
+                        <option value="1.5">1.5</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Alineación de Párrafo</label>
+                    <select id="cfgTextAlignment">
+                        <option value="left" selected>Izquierda</option>
+                        <option value="justify">Justificado</option>
+                        <option value="center">Centrado</option>
+                        <option value="right">Derecha</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- TAB: HEADINGS -->
+            <div id="tab-headings" class="tab-content hidden-tab">
+                <div class="section-title">Título 1 (Principal)</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño (pt)</label>
+                        <input type="number" id="cfgH1Size" value="16">
+                    </div>
+                    <div class="input-group">
+                        <label>Color</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgH1Color" value="#000000">
+                            <input type="text" id="cfgH1ColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="cfgH1Bold" checked>
+                    <label for="cfgH1Bold">Negrita</label>
+                </div>
+
+                <div class="section-title">Título 2 (Subtítulo)</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño (pt)</label>
+                        <input type="number" id="cfgH2Size" value="13">
+                    </div>
+                    <div class="input-group">
+                        <label>Color</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgH2Color" value="#4E2A84">
+                            <input type="text" id="cfgH2ColorHex" value="#4E2A84" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="cfgH2Bold" checked>
+                    <label for="cfgH2Bold">Negrita</label>
+                </div>
+            </div>
+
+            <!-- TAB: TABLES -->
+            <div id="tab-tables" class="tab-content hidden-tab">
+                <div class="preview-container">
+                    <label>Vista Previa:</label>
+                    <div id="tablePreview" class="table-preview-box">
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Encabezado 1</th>
+                                    <th>Encabezado 2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dato A1</td>
+                                    <td>Dato A2</td>
+                                </tr>
+                                <tr>
+                                    <td>Dato B1</td>
+                                    <td>Dato B2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Fondo Encabezado</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableHeaderBg" value="#4E2A84">
+                            <input type="text" id="cfgTableHeaderBgHex" value="#4E2A84" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Texto Encabezado</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableHeaderText" value="#FFFFFF">
+                            <input type="text" id="cfgTableHeaderTextHex" value="#FFFFFF" class="hex-input"
+                                maxlength="7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Bordes Verticales</label>
+                        <select id="cfgTableBorderV">
+                            <option value="none">Ninguno</option>
+                            <option value="single" selected>Simple (Fino)</option>
+                            <option value="thick">Grueso</option>
+                            <option value="dashed">Punteado</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Bordes Horizontales</label>
+                        <select id="cfgTableBorderH">
+                            <option value="none">Ninguno</option>
+                            <option value="single" selected>Simple (Fino)</option>
+                            <option value="thick">Grueso</option>
+                            <option value="dashed">Punteado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Color de Bordes</label>
+                    <div class="color-picker-row">
+                        <input type="color" id="cfgTableBorderColor" value="#000000">
+                        <input type="text" id="cfgTableBorderColorHex" value="#000000" class="hex-input" maxlength="7">
+                    </div>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="cfgTableZebra" checked>
+                    <label for="cfgTableZebra">Filas Alternas (Zebra)</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="cfgTableNumberAlign" checked>
+                    <label for="cfgTableNumberAlign">Alinear Números a la Derecha</label>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 TAB: CARÁTULA
+            ══════════════════════════════════════════ -->
+            <div id="tab-caratula" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span style="font-size:12px; color:var(--text-muted);">Insertar página de carátula al inicio del
+                        documento</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableCaratula">
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+
+                <!-- Mini layout diagram -->
+                <div
+                    style="border:1px solid var(--border-color); border-radius:6px; margin-bottom:16px; background:#f8fafc; position:relative; height:130px; overflow:hidden;">
+                    <div
+                        style="position:absolute; top:10px; left:50%; transform:translateX(-50%); width:44px; height:34px; background:#e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <i class="fa-regular fa-image" style="font-size:12px; color:#94a3b8;"></i>
+                    </div>
+                    <div
+                        style="position:absolute; top:52%; left:8%; right:8%; transform:translateY(-50%); margin-top:6px; background:#3b82f6; border-radius:4px; padding:5px 8px; text-align:center;">
+                        <span style="font-size:9px; color:white; font-weight:700; letter-spacing:0.5px;">TÍTULO DEL
+                            DOCUMENTO</span>
+                    </div>
+                    <div
+                        style="position:absolute; bottom:12px; left:22%; right:22%; background:#93c5fd; border-radius:4px; padding:4px 8px; text-align:center;">
+                        <span style="font-size:8px; color:#1e3a8a; font-weight:600;">AUTOR (opcional)</span>
+                    </div>
+                    <span style="position:absolute; top:5px; right:8px; font-size:9px; color:#94a3b8;">Carta</span>
+                </div>
+
+                <!-- Imagen -->
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label><i class="fa-regular fa-image" style="margin-right:4px;"></i>Imagen (logo / escudo)</label>
+                    <div class="header-upload-box" id="caratulaImgDropZone" style="height:70px;">
+                        <input type="file" id="caratulaImgInput" accept="image/*,.emf,.wmf,.svg" hidden>
+                        <div class="preview-area" id="caratulaImgPreview">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:14px;"></i>
+                            <span style="font-size:10px;">PNG · JPG · EMF · WMF · SVG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label style="display:flex; align-items:center; gap:6px;">
+                        Título
+                        <span
+                            style="font-size:9px; background:#dbeafe; color:#1d4ed8; padding:1px 6px; border-radius:10px;">Auto
+                            del documento</span>
+                    </label>
+                    <input type="text" id="caratulaTitulo" placeholder="Se toma del nombre del archivo">
+                </div>
+
+                <!-- Autor (opcional) -->
+                <div style="margin-bottom:10px;">
+                    <label class="toggle-row" style="margin-bottom:6px;">
+                        <span style="font-size:12px;">Incluir Autor</span>
+                        <input type="checkbox" id="caratulaIncluirAutor">
+                        <div class="toggle-switch"></div>
+                    </label>
+                    <div id="caratulaAutorField" style="display:none;">
+                        <input type="text" id="caraTulaAutor" placeholder="Nombre completo del autor"
+                            style="width:100%;">
+                    </div>
+                </div>
+
+                <!-- Tipografía carátula -->
+                <div class="section-title" style="margin-top:8px;">Tipografía de Carátula</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Título (pt)</label>
+                        <input type="number" id="cfgCaratulaTitleSize" value="20">
+                    </div>
+                    <div class="input-group">
+                        <label>Tamaño Autor (pt)</label>
+                        <input type="number" id="cfgCaratulaAutorSize" value="13">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Color Título</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgCaratulaTitleColor" value="#000000">
+                            <input type="text" id="cfgCaratulaTitleColorHex" value="#000000" class="hex-input"
+                                maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Color Autor</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgCaratulaAutorColor" value="#333333">
+                            <input type="text" id="cfgCaratulaAutorColorHex" value="#333333" class="hex-input"
+                                maxlength="7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 TAB: ENCABEZADO
+            ══════════════════════════════════════════ -->
+            <div id="tab-encabezado" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span style="font-size:12px; color:var(--text-muted);">Encabezado en todas las páginas del
+                        documento</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableEncabezado">
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label><i class="fa-regular fa-image" style="margin-right:4px;"></i>Imagen</label>
+                    <div class="header-upload-box" id="headerDropZone" style="height:65px;">
+                        <input type="file" id="headerInput" accept="image/*,.emf,.wmf,.svg" hidden>
+                        <div class="preview-area" id="headerPreview">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:13px;"></i>
+                            <span style="font-size:9px;">PNG · JPG · EMF · WMF · SVG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-bottom:10px;">
+                    <div class="input-group">
+                        <label>Texto Izquierda</label>
+                        <input type="text" id="headerLeft" placeholder="Texto izq.">
+                    </div>
+                    <div class="input-group">
+                        <label>Texto Derecha</label>
+                        <input type="text" id="headerRight" placeholder="Texto der.">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label>Texto Centro</label>
+                    <input type="text" id="headerCenter" placeholder="Texto central">
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Línea separadora</label>
+                        <select id="headerLineStyle">
+                            <option value="none">Ninguna</option>
+                            <option value="single" selected>Simple</option>
+                            <option value="thick">Gruesa</option>
+                            <option value="dashed">Punteada</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Color línea</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="headerLineColor" value="#000000">
+                            <input type="text" id="headerLineColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 TAB: FOOTER
+            ══════════════════════════════════════════ -->
+            <div id="tab-footer" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span style="font-size:12px; color:var(--text-muted);">Pie de página en todas las páginas del
+                        documento</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableFooter">
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label><i class="fa-regular fa-image" style="margin-right:4px;"></i>Imagen</label>
+                    <div class="header-upload-box" id="footerImgDropZone" style="height:65px;">
+                        <input type="file" id="footerImgInput" accept="image/*,.emf,.wmf,.svg" hidden>
+                        <div class="preview-area" id="footerImgPreview">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:13px;"></i>
+                            <span style="font-size:9px;">PNG · JPG · EMF · WMF · SVG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-bottom:10px;">
+                    <div class="input-group">
+                        <label>Texto Izquierda</label>
+                        <input type="text" id="footerLeft" placeholder="Texto izq.">
+                    </div>
+                    <div class="input-group">
+                        <label>Texto Derecha</label>
+                        <input type="text" id="footerRight" placeholder="Texto der.">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label>Texto Centro</label>
+                    <input type="text" id="footerCenter" placeholder="Texto central">
+                </div>
+
+                <label class="toggle-row" style="margin-bottom:8px;">
+                    <span style="font-size:12px;">Numeración de páginas</span>
+                    <input type="checkbox" id="footerPageNumbers" checked>
+                    <div class="toggle-switch"></div>
+                </label>
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label>Posición número</label>
+                    <select id="footerPageNumPos">
+                        <option value="right" selected>Derecha</option>
+                        <option value="center">Centro</option>
+                        <option value="left">Izquierda</option>
+                    </select>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Línea separadora</label>
+                        <select id="footerLineStyle">
+                            <option value="none">Ninguna</option>
+                            <option value="single" selected>Simple</option>
+                            <option value="thick">Gruesa</option>
+                            <option value="dashed">Punteada</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Color línea</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="footerLineColor" value="#000000">
+                            <input type="text" id="footerLineColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 TAB: HOJA FINAL
+            ══════════════════════════════════════════ -->
+            <div id="tab-hojafinal" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span style="font-size:12px; color:var(--text-muted);">Insertar página de cierre al final del
+                        documento</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableHojaFinal">
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label><i class="fa-regular fa-image" style="margin-right:4px;"></i>Imagen</label>
+                    <div class="header-upload-box" id="hojaFinalImgDropZone" style="height:65px;">
+                        <input type="file" id="hojaFinalImgInput" accept="image/*,.emf,.wmf,.svg" hidden>
+                        <div class="preview-area" id="hojaFinalImgPreview">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:13px;"></i>
+                            <span style="font-size:9px;">PNG · JPG · EMF · WMF · SVG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-bottom:10px;">
+                    <label>Texto principal</label>
+                    <input type="text" id="hojaFinalTexto" placeholder="Ej: Fin del documento">
+                </div>
+
+                <div class="section-title" style="margin-top:4px;">Tipografía</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño (pt)</label>
+                        <input type="number" id="cfgHojaFinalSize" value="14">
+                    </div>
+                    <div class="input-group">
+                        <label>Color</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgHojaFinalColor" value="#000000">
+                            <input type="text" id="cfgHojaFinalColorHex" value="#000000" class="hex-input"
+                                maxlength="7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="config-footer">
+            <button id="saveConfigBtn" class="btn-primary" style="width:100%;">Guardar Cambios</button>
+        </div>
+    </div>
+</div>

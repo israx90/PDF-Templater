@@ -1,0 +1,53 @@
+{
+  "name": "edtech-pdf-tool",
+  "version": "1.0.0",
+  "description": "EDTech Suite - PDF, Word and Excel Templater",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build": "electron-builder"
+  },
+  "author": "EDTech",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^41.0.1",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.edtech.pdftool",
+    "productName": "EDTech PDF Tool",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "files": [
+      "!**/*",
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/app_server",
+        "to": "app_server",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

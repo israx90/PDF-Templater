@@ -1,0 +1,434 @@
+<!-- PDF Config Modal (Blanco Light Style) -->
+<div id="configModal" class="config-modal-overlay">
+    <div class="config-window" style="width: 720px;">
+        <div class="config-header">
+            <span class="config-title"><i class="fa-solid fa-paintbrush"></i> Configurar Estilos PDF</span>
+            <button id="closeConfigBtn" class="btn-close-config"><i class="fa-solid fa-times"></i></button>
+        </div>
+
+        <div class="config-tabs">
+            <button class="tab-btn active" data-tab="pdf-tab-documento"><i class="fa-solid fa-file-lines" style="margin-right:4px;"></i>Documento</button>
+            <button class="tab-btn" data-tab="pdf-tab-estilos"><i class="fa-solid fa-palette" style="margin-right:4px;"></i>Estilos Visuales</button>
+            <button class="tab-btn" data-tab="pdf-tab-bloques"><i class="fa-solid fa-puzzle-piece" style="margin-right:4px;"></i>Encabezado & APA</button>
+            <button class="tab-btn tab-btn-divider" data-tab="pdf-tab-tapas">
+                <i class="fa-solid fa-book-open"></i> Tapas
+            </button>
+        </div>
+
+        <div class="config-body">
+            <!-- TAB 1: DOCUMENTO -->
+            <div id="pdf-tab-documento" class="tab-content">
+                <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-ruler-combined"></i> Formato y Papel</div>
+                <div class="paper-selector" id="paperSizeGroup" style="margin-bottom:15px;">
+                    <label class="paper-card active" data-value="letter">
+                        <div class="icon"><i class="fa-regular fa-file"></i></div>
+                        <span>CARTA</span>
+                    </label>
+                    <label class="paper-card" data-value="legal">
+                        <div class="icon"><i class="fa-solid fa-file-contract"></i></div>
+                        <span>OFICIO</span>
+                    </label>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Margen Superior (pt)</label>
+                        <input type="number" id="cfgMarginTop" value="50" min="20" max="100" step="5">
+                    </div>
+                    <div class="input-group">
+                        <label>Margen Inferior (pt)</label>
+                        <input type="number" id="cfgMarginBottom" value="50" min="20" max="100" step="5">
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-bottom:15px;">
+                    <div class="input-group">
+                        <label>Margen Izquierdo (pt)</label>
+                        <input type="number" id="cfgMarginLeft" value="50" min="20" max="100" step="5">
+                    </div>
+                    <div class="input-group">
+                        <label>Margen Derecho (pt)</label>
+                        <input type="number" id="cfgMarginRight" value="50" min="20" max="100" step="5">
+                    </div>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-font"></i> Tipografía Base</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Fuente</label>
+                        <select id="cfgFont">
+                            <option value="Helvetica">Helvetica (Estándar Sans)</option>
+                            <option value="Times-Roman">Times New Roman (Serif)</option>
+                            <option value="Courier">Courier (Monospace)</option>
+                            <option value="Calibri">Calibri (Sans-Serif)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Alineación</label>
+                        <select id="cfgTextAlignment">
+                            <option value="justify" selected>Justificado</option>
+                            <option value="left">Izquierda</option>
+                            <option value="center">Centrado</option>
+                            <option value="right">Derecha</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Texto (pt)</label>
+                        <input type="number" id="cfgFontSize" value="11" min="8" max="16">
+                    </div>
+                    <div class="input-group">
+                        <label>Interlineado</label>
+                        <select id="cfgLineSpacing">
+                            <option value="1.2">Sencillo (1.0)</option>
+                            <option value="1.5" selected>1.5 Líneas</option>
+                            <option value="2.0">Doble (2.0)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-list-ol"></i> Numeración de Página</div>
+                <div class="input-group">
+                    <select id="cfgPageNumFormat">
+                        <option value="simple">1</option>
+                        <option value="page_n">Página 1</option>
+                        <option value="n_of_m">1 de n</option>
+                        <option value="page_n_of_m" selected>Página 1 de n</option>
+                        <option value="none">Sin numeración</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- TAB 2: ESTILOS VISUALES -->
+            <div id="pdf-tab-estilos" class="tab-content hidden-tab">
+                <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-heading"></i> Títulos y Enlaces</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Título (H1)</label>
+                        <input type="number" id="cfgH1Size" value="26">
+                    </div>
+                    <div class="input-group">
+                        <label>Color H1</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgH1Color" value="#000000">
+                            <input type="text" id="cfgH1ColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Subtítulo (H2)</label>
+                        <input type="number" id="cfgH2Size" value="17">
+                    </div>
+                    <div class="input-group">
+                        <label>Color H2</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgH2Color" value="#ef4444">
+                            <input type="text" id="cfgH2ColorHex" value="#EF4444" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top:5px; margin-bottom:15px;">
+                    <label>Color Hipervínculos</label>
+                    <div class="color-picker-row">
+                        <input type="color" id="cfgLinkColor" value="#2c6eff">
+                        <input type="text" id="cfgLinkColorHex" value="#2C6EFF" class="hex-input" maxlength="7">
+                    </div>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-table"></i> Tablas de Datos</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Fondo Encabezado</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableHeaderBg" value="#1e3a5f">
+                            <input type="text" id="cfgTableHeaderBgHex" value="#1E3A5F" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Color Texto Encabezado</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableHeaderText" value="#ffffff">
+                            <input type="text" id="cfgTableHeaderTextHex" value="#FFFFFF" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Fila Par</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableRowEven" value="#f0f4f8">
+                            <input type="text" id="cfgTableRowEvenHex" value="#F0F4F8" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Fila Impar</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableRowOdd" value="#ffffff">
+                            <input type="text" id="cfgTableRowOddHex" value="#FFFFFF" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Color Borde</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgTableBorderColor" value="#cccccc">
+                            <input type="text" id="cfgTableBorderColorHex" value="#CCCCCC" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Grosor Borde (pt)</label>
+                        <input type="number" id="cfgTableBorderWidth" value="0.5" min="0" max="3" step="0.5">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Texto (pt)</label>
+                        <input type="number" id="cfgTableFontSize" value="9" min="6" max="14">
+                    </div>
+                    <div class="input-group">
+                        <label>Padding (pt)</label>
+                        <input type="number" id="cfgTablePadding" value="5" min="2" max="12">
+                    </div>
+                </div>
+                
+                <!-- Table Preview -->
+                <div style="margin-top:10px; overflow:auto; border-radius:6px; border:1px solid var(--border-color);">
+                    <table id="tablePreviewPdf" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <thead>
+                            <tr id="previewHeaderRow">
+                                <th style="padding:8px 10px; text-align:left;">Columna A</th>
+                                <th style="padding:8px 10px; text-align:left;">Columna B</th>
+                                <th style="padding:8px 10px; text-align:left;">Columna C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="previewRow1">
+                                <td style="padding:6px 10px;">Dato 1</td>
+                                <td style="padding:6px 10px;">Dato 2</td>
+                                <td style="padding:6px 10px;">Dato 3</td>
+                            </tr>
+                            <tr id="previewRow2">
+                                <td style="padding:6px 10px;">Dato 4</td>
+                                <td style="padding:6px 10px;">Dato 5</td>
+                                <td style="padding:6px 10px;">Dato 6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: BLOQUES -->
+            <div id="pdf-tab-bloques" class="tab-content hidden-tab">
+                <div class="info-box" style="margin-bottom:15px; background:var(--bg-panel-secondary); padding:10px; border-radius:6px; font-size:0.85rem; color:var(--text-muted);">
+                    <i class="fa-solid fa-info-circle"></i> Configura los bloques estructurales que preceden y finalizan el documento.
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-regular fa-window-maximize"></i> Encabezado de Página</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableHeaderText" checked onchange="
+                            const zone = document.getElementById('headerTextZone');
+                            if(zone) zone.style.display = this.checked ? 'block' : 'none';
+                        ">
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+                <div id="headerTextZone">
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>Contenido</label>
+                            <select id="cfgHeaderType">
+                                <option value="title" selected>Título del Documento</option>
+                                <option value="custom">Texto Personalizado</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="customHeaderGroup" style="display:none;">
+                            <label>Texto Custom</label>
+                            <input type="text" id="cfgHeaderText" placeholder="Ej: Reporte 2026">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top:10px; margin-bottom:15px;">
+                    <label>Alto Imagen Encabezado (pt)</label>
+                    <input type="number" id="cfgHeaderImgHeight" value="40" min="15" max="80" step="5">
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:20px; border-top:1px solid var(--border-color); padding-top:15px; margin-bottom:10px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-solid fa-asterisk"></i> Bloque de Referencia APA</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableApaBlock" checked>
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Fondo APA</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgApaBg" value="#f5f5f5">
+                            <input type="text" id="cfgApaBgHex" value="#F5F5F5" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Borde APA</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgApaBorder" value="#cccccc">
+                            <input type="text" id="cfgApaBorderHex" value="#CCCCCC" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Texto (pt)</label>
+                        <input type="number" id="cfgApaFontSize" value="10" min="7" max="14">
+                    </div>
+                    <div class="input-group">
+                        <label>Color Texto APA</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgApaTextColor" value="#000000">
+                            <input type="text" id="cfgApaTextColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: TAPAS -->
+            <div id="pdf-tab-tapas" class="tab-content hidden-tab">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <span class="section-title" style="margin:0;"><i class="fa-regular fa-image"></i> Carátula Inicial</span>
+                    <label class="toggle-mini">
+                        <input type="checkbox" id="enableCaratula" checked>
+                        <span class="toggle-mini-switch"></span>
+                    </label>
+                </div>
+
+                <!-- Interactive Preview -->
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px; display:block;">
+                        <i class="fa-solid fa-arrows-up-down-left-right" style="margin-right:4px;"></i>Editor Visual (Arrastra los textos)
+                    </label>
+                    <div id="caratulaPreviewContainer" style="
+                        position:relative; width:100%; aspect-ratio:8.5/11;
+                        border:2px solid #cbd5e1; border-radius:8px; overflow:hidden;
+                        background:#f8fafc; cursor:crosshair; user-select:none;
+                    ">
+                        <div id="caratulaPreviewBg" style="position:absolute; inset:0; background-size:cover; background-position:center;"></div>
+                        <div style="position:absolute; inset:0; background-image:
+                            linear-gradient(rgba(100,116,139,0.06) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(100,116,139,0.06) 1px, transparent 1px);
+                            background-size: 20% 20%;
+                        "></div>
+                        <div style="position:absolute; top:0; bottom:0; left:50%; width:1px; background:rgba(59,130,246,0.15);"></div>
+                        
+                        <div id="caratulaDragInstitucion" class="caratula-drag-label" style="
+                            position:absolute; left:50%; top:15%; transform:translate(-50%,-50%);
+                            font-size:9px; font-weight:700; color:#64748b; cursor:grab; padding:3px 10px; border-radius:4px;
+                            border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;
+                        " data-field="institucion">INSTITUCIÓN</div>
+                        
+                        <div id="caratulaDragTitle" class="caratula-drag-label" style="
+                            position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+                            font-size:12px; font-weight:800; color:#1e293b; letter-spacing:0.5px; cursor:grab; padding:4px 12px;
+                            border-radius:4px; border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap;
+                            text-align:center; max-width:90%;
+                        " data-field="titulo">TÍTULO DEL DOCUMENTO</div>
+                        
+                        <div id="caratulaDragAutor" class="caratula-drag-label" style="
+                            position:absolute; left:50%; top:58%; transform:translate(-50%,-50%);
+                            font-size:8px; color:#64748b; cursor:grab; padding:3px 10px; border-radius:4px;
+                            border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;
+                        " data-field="autor">Autor (opcional)</div>
+                        
+                        <div id="caratulaDragFecha" class="caratula-drag-label" style="
+                            position:absolute; left:50%; top:65%; transform:translate(-50%,-50%);
+                            font-size:7px; color:#94a3b8; cursor:grab; padding:2px 8px; border-radius:4px;
+                            border:1px dashed transparent; transition:border-color 0.15s; white-space:nowrap; text-align:center;
+                        " data-field="fecha">Fecha</div>
+                    </div>
+                </div>
+
+                <!-- Pos sliders (hidden natively, updated via drag) -->
+                <div class="grid-2" style="margin-bottom:10px; display:none;">
+                    <input type="range" id="cfgCaratulaTitleX" min="5" max="95" value="50">
+                    <input type="range" id="cfgCaratulaTitleY" min="5" max="95" value="50">
+                </div>
+
+                <!-- Text Fields -->
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Título Especifico</label>
+                        <input type="text" id="caratulaTitulo" placeholder="Automático si se omite">
+                    </div>
+                    <div>
+                        <label class="toggle-row" style="margin-bottom:4px;">
+                            <span style="font-size:12px; color:var(--text-muted); font-weight:500;">Incluir Autor</span>
+                            <input type="checkbox" id="caratulaIncluirAutor">
+                            <div class="toggle-switch"></div>
+                        </label>
+                        <div id="caratulaAutorField" style="display:none;">
+                            <input type="text" id="caraTulaAutor" placeholder="Nombre completo" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Institución</label>
+                        <input type="text" id="caraTulaInstitucion" placeholder="Ej: UNIFRANZ">
+                    </div>
+                    <div class="input-group">
+                        <label>Fecha</label>
+                        <input type="text" id="caraTulaFecha" placeholder="Ej: 2026">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Tamaño Título (pt)</label>
+                        <input type="number" id="cfgCaratulaTitleSize" value="20">
+                    </div>
+                    <div class="input-group">
+                        <label>Tamaño Autor (pt)</label>
+                        <input type="number" id="cfgCaratulaAutorSize" value="13">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Color Título</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgCaratulaTitleColor" value="#000000">
+                            <input type="text" id="cfgCaratulaTitleColorHex" value="#000000" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Color Autor/Resto</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="cfgCaratulaAutorColor" value="#333333">
+                            <input type="text" id="cfgCaratulaAutorColorHex" value="#333333" class="hex-input" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTRATAPA -->
+                <div style="border-top:1px solid var(--border-color); margin-top:16px; padding-top:14px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <span class="section-title" style="margin:0;"><i class="fa-solid fa-file-circle-minus"></i> Contratapa (Al Cierre)</span>
+                        <label class="toggle-mini">
+                            <input type="checkbox" id="enableContratapa">
+                            <span class="toggle-mini-switch"></span>
+                        </label>
+                    </div>
+                    <div class="info-box" style="margin-top:8px; background:var(--bg-panel-secondary); padding:8px; border-radius:6px; font-size:0.8rem; color:var(--text-muted);">
+                        <i class="fa-solid fa-info-circle"></i> Usa la imagen subida en la barra lateral para generar una hoja final muda.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-footer">
+            <button id="saveConfigBtn" class="btn-primary" style="width:100%; justify-content:center;"><i class="fa-solid fa-check"></i> Aplicar Cambios al PDF</button>
+        </div>
+    </div>
+</div>

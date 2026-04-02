@@ -1,0 +1,88 @@
+<!-- PDF SIDEBAR COMPONENT -->
+<aside class="sidebar-left">
+    <!-- Brand -->
+    <div class="brand" style="background: var(--primary); color: white; border-bottom: none;">
+        <a href="/" style="text-decoration:none; color: white; display:flex; align-items:center; gap:10px;">
+            <img src="/static/img/edtech_icon.svg" alt="EDTech" style="width:44px; height:44px; flex-shrink:0;">
+            <div class="logo-text">
+                <span class="brand-highlight" style="color: white;">EDTECH</span>
+                <span class="brand-sub" style="color: rgba(255, 255, 255, 0.9);">PDF TEMPLATER</span>
+            </div>
+            <div class="version" style="background: rgba(255, 255, 255, 0.2); border: none; color: white;">v1.5</div>
+        </a>
+    </div>
+    <div class="sidebar-header" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">
+        <h3 style="margin:0; font-size:12px; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.5px;">
+            <i class="fa-solid fa-list-ul" style="margin-right:6px;"></i> Cola de Proc.
+        </h3>
+    </div>
+    <div class="settings-group" style="margin-bottom: 15px;">
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:5px;">Plantillas</label>
+        <div style="display:flex; gap:5px;">
+            <button id="importTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;"
+                title="Cargar Plantilla">
+                <i class="fa-solid fa-file-arrow-up"></i> Cargar
+            </button>
+            <button id="exportTemplateBtn" class="btn-mini btn-outline" style="flex:1; justify-content:center;"
+                title="Guardar Plantilla">
+                <i class="fa-solid fa-file-arrow-down"></i> Guardar
+            </button>
+            <input type="file" id="templateInput" accept=".edd,.edx,.epd,.edp,application/json" hidden>
+        </div>
+    </div>
+
+    <!-- Custom Header Upload -->
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-image"></i> Encabezado</h3>
+        <div class="header-upload-box" id="headerDropZone">
+            <input type="file" id="headerInput" accept="image/*" hidden>
+            <div class="preview-area" id="headerPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Subir Imagen</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cover Page Image Upload -->
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-file-image"></i> Carátula</h3>
+        <div class="header-upload-box" id="caratulaImgDropZone">
+            <input type="file" id="caratulaImgInput" accept="image/*" hidden>
+            <div class="preview-area" id="caratulaImgPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Imagen de Fondo</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Cover Page Image Upload -->
+    <div class="settings-group">
+        <h3><i class="fa-solid fa-file-image"></i> Contratapa</h3>
+        <div class="header-upload-box" id="contratapaImgDropZone">
+            <input type="file" id="contratapaImgInput" accept="image/*" hidden>
+            <div class="preview-area" id="contratapaImgPreview">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Imagen de Fondo</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Config Button -->
+    <div class="settings-group">
+        <!-- General Config -->
+        <button id="openConfigBtnSidebar" class="btn-select" style="width: 100%; justify-content: center; padding: 10px; background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">
+            <i class="fa-solid fa-gear" style="width:20px; text-align:center;"></i> Configurar Estilos PDF
+        </button>
+    </div>
+
+    <!-- Info -->
+    <div class="settings-group" style="margin-top:auto;">
+        <div
+            style="background:var(--bg-panel-secondary); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-muted);">
+            <i class="fa-solid fa-circle-info" style="color:var(--primary); margin-right:5px;"></i>
+            Conversor Web a PDF optimizado para <strong>Unifranz</strong>.
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,10 @@
+venv/
+node_modules/
+__pycache__/
+dist/
+build/
+uploads/
+outputs/
+.DS_Store
+*.epd
+
