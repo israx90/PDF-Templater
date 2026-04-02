@@ -666,7 +666,19 @@ class WebConverter:
                     if progress_callback: progress_callback(25, "Intentando con navegador real...")
                     from playwright.sync_api import sync_playwright
                     with sync_playwright() as pw:
-                        browser = pw.chromium.launch(headless=False)
+                        # Fallback inteligente para evitar requerir binarios extra en el .exe
+                        browser = None
+                        try:
+                            # 1. Intentar con Edge Nativo (Windows)
+                            browser = pw.chromium.launch(headless=False, channel="msedge")
+                        except Exception:
+                            try:
+                                # 2. Intentar con Chrome (Mac/Windows)
+                                browser = pw.chromium.launch(headless=False, channel="chrome")
+                            except Exception:
+                                # 3. Fallback al interno
+                                browser = pw.chromium.launch(headless=False)
+
                         ctx = browser.new_context(
                             user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
                             viewport={'width': 1280, 'height': 800}
@@ -1067,7 +1079,15 @@ class WebConverter:
                             _parsed_url = _urlparse(url)
                             _base = f"{_parsed_url.scheme}://{_parsed_url.netloc}"
                             with sync_playwright() as pw:
-                                browser = pw.chromium.launch(headless=True)
+                                # Fallback inteligente
+                                browser = None
+                                try:
+                                    browser = pw.chromium.launch(headless=True, channel="msedge")
+                                except Exception:
+                                    try:
+                                        browser = pw.chromium.launch(headless=True, channel="chrome")
+                                    except Exception:
+                                        browser = pw.chromium.launch(headless=True)
                                 page = browser.new_page()
                                 page.set_extra_http_headers({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'})
                                 page.goto(url, wait_until='networkidle', timeout=20000)
