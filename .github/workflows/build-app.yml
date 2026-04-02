@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-13]
+        os: [windows-latest, macos-latest]
 
     steps:
       - name: 📥 Clonar Repositorio
@@ -51,7 +51,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🚀 Construir App Electron (Mac)
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-latest'
         run: npm run build:mac
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
